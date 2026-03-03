@@ -12,13 +12,13 @@ export async function GET(request: NextRequest) {
 
   try {
     const data = await fetchGeocode(q);
-    const results: City[] = data.map(
-      (item: { name: string; lat: number; lon: number; country: string; state?: string }) => ({
+    const results: City[] = (data.results || []).map(
+      (item: { name: string; latitude: number; longitude: number; country_code: string; admin1?: string; country?: string }) => ({
         name: item.name,
-        lat: item.lat,
-        lon: item.lon,
-        country: item.country,
-        state: item.state,
+        lat: item.latitude,
+        lon: item.longitude,
+        country: item.country_code,
+        state: item.admin1,
       })
     );
     return NextResponse.json(results);

@@ -3,6 +3,15 @@ import { fetchAirQuality } from "@/lib/weather-api";
 import { getCached, setCache } from "@/lib/cache";
 import type { AirQuality } from "@/lib/types";
 
+// Convert European AQI (0-100+) to 1-5 scale
+function mapEuropeanAqiTo5Scale(eaqi: number): number {
+  if (eaqi <= 20) return 1; // Good
+  if (eaqi <= 40) return 2; // Fair
+  if (eaqi <= 60) return 3; // Moderate
+  if (eaqi <= 80) return 4; // Poor
+  return 5; // Very Poor
+}
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const lat = searchParams.get("lat");
@@ -18,16 +27,16 @@ export async function GET(request: NextRequest) {
 
   try {
     const data = await fetchAirQuality(Number(lat), Number(lon));
-    const item = data.list[0];
+    const current = data.current;
     const result: AirQuality = {
-      aqi: item.main.aqi,
+      aqi: mapEuropeanAqiTo5Scale(current.european_aqi),
       components: {
-        pm2_5: item.components.pm2_5,
-        pm10: item.components.pm10,
-        o3: item.components.o3,
-        no2: item.components.no2,
-        so2: item.components.so2,
-        co: item.components.co,
+        pm2_5: current.pm2_5,
+        pm10: current.pm10,
+        o3: current.ozone,
+        no2: current.nitrogen_dioxide,
+        so2: current.sulphur_dioxide,
+        co: current.carbon_monoxide,
       },
     };
     setCache(cacheKey, result);

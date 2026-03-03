@@ -1,39 +1,50 @@
-const BASE_URL = "https://api.openweathermap.org";
-
-function getApiKey(): string {
-  const key = process.env.OPENWEATHERMAP_API_KEY;
-  if (!key) throw new Error("OPENWEATHERMAP_API_KEY is not set");
-  return key;
-}
+const WEATHER_BASE = "https://api.open-meteo.com/v1/forecast";
+const AIR_QUALITY_BASE = "https://air-quality-api.open-meteo.com/v1/air-quality";
+const GEOCODE_BASE = "https://geocoding-api.open-meteo.com/v1/search";
 
 export async function fetchCurrentWeather(lat: number, lon: number) {
-  const res = await fetch(
-    `${BASE_URL}/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${getApiKey()}`
-  );
+  const params = new URLSearchParams({
+    latitude: lat.toString(),
+    longitude: lon.toString(),
+    current: "temperature_2m,relative_humidity_2m,wind_speed_10m,wind_direction_10m,weather_code,apparent_temperature,surface_pressure,cloud_cover",
+    timezone: "auto",
+  });
+  const res = await fetch(`${WEATHER_BASE}?${params}`);
   if (!res.ok) throw new Error(`Weather API error: ${res.status}`);
   return res.json();
 }
 
 export async function fetchForecast(lat: number, lon: number) {
-  const res = await fetch(
-    `${BASE_URL}/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${getApiKey()}`
-  );
+  const params = new URLSearchParams({
+    latitude: lat.toString(),
+    longitude: lon.toString(),
+    hourly: "temperature_2m,relative_humidity_2m,precipitation_probability,weather_code,wind_speed_10m",
+    daily: "temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code",
+    timezone: "auto",
+  });
+  const res = await fetch(`${WEATHER_BASE}?${params}`);
   if (!res.ok) throw new Error(`Forecast API error: ${res.status}`);
   return res.json();
 }
 
 export async function fetchAirQuality(lat: number, lon: number) {
-  const res = await fetch(
-    `${BASE_URL}/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${getApiKey()}`
-  );
+  const params = new URLSearchParams({
+    latitude: lat.toString(),
+    longitude: lon.toString(),
+    current: "european_aqi,pm2_5,pm10,ozone,nitrogen_dioxide,sulphur_dioxide,carbon_monoxide",
+  });
+  const res = await fetch(`${AIR_QUALITY_BASE}?${params}`);
   if (!res.ok) throw new Error(`Air quality API error: ${res.status}`);
   return res.json();
 }
 
 export async function fetchGeocode(query: string) {
-  const res = await fetch(
-    `${BASE_URL}/geo/1.0/direct?q=${encodeURIComponent(query)}&limit=5&appid=${getApiKey()}`
-  );
+  const params = new URLSearchParams({
+    name: query,
+    count: "5",
+    language: "en",
+  });
+  const res = await fetch(`${GEOCODE_BASE}?${params}`);
   if (!res.ok) throw new Error(`Geocode API error: ${res.status}`);
   return res.json();
 }

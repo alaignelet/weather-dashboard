@@ -27,10 +27,6 @@ export default function LeafletMap({ center, activeLayer }: LeafletMapProps) {
     >
       <MapUpdater center={center} />
       <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" />
-      <TileLayer
-        url={`https://tile.openweathermap.org/map/${activeLayer}/{z}/{x}/{y}.png?appid=${process.env.NEXT_PUBLIC_OPENWEATHERMAP_API_KEY}`}
-        opacity={0.6}
-      />
     </MapContainer>
   );
 }

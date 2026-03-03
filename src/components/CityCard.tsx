@@ -23,9 +23,12 @@ export function CityCard({ city }: CityCardProps) {
   const isSelected = selectedCity?.lat === city.lat && selectedCity?.lon === city.lon;
 
   return (
-    <button
+    <div
       onClick={() => selectCity(city)}
-      className={`glass-card p-4 min-w-[200px] text-left transition-all duration-300 hover:bg-white/10 ${
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") selectCity(city); }}
+      className={`glass-card p-4 min-w-[200px] text-left transition-all duration-300 hover:bg-white/10 cursor-pointer ${
         isSelected ? "ring-2 ring-blue-400/50 bg-white/10" : ""
       }`}
     >
@@ -53,11 +56,15 @@ export function CityCard({ city }: CityCardProps) {
       ) : weather ? (
         <>
           <div className="flex items-center gap-2 mb-2">
-            <img
-              src={`https://openweathermap.org/img/wn/${weather.icon}@2x.png`}
-              alt={weather.description}
-              className="w-12 h-12"
-            />
+            <span className="text-4xl" role="img" aria-label={weather.description}>
+              {weather.main === "Clear" ? "\u2600\uFE0F" :
+               weather.main === "Clouds" ? "\u2601\uFE0F" :
+               weather.main === "Rain" ? "\uD83C\uDF27\uFE0F" :
+               weather.main === "Drizzle" ? "\uD83C\uDF26\uFE0F" :
+               weather.main === "Snow" ? "\u2744\uFE0F" :
+               weather.main === "Thunderstorm" ? "\u26C8\uFE0F" :
+               weather.main === "Fog" ? "\uD83C\uDF2B\uFE0F" : "\uD83C\uDF24\uFE0F"}
+            </span>
             <span
               className={`text-3xl font-bold bg-gradient-to-r ${getTempColor(weather.temp)} bg-clip-text text-transparent`}
             >
@@ -83,6 +90,6 @@ export function CityCard({ city }: CityCardProps) {
       ) : (
         <p className="text-xs text-slate-500">No data</p>
       )}
-    </button>
+    </div>
   );
 }
