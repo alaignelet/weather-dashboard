@@ -42,7 +42,7 @@ export function CitySearch() {
           }}
           onFocus={() => setIsOpen(true)}
           placeholder="Search city..."
-          className="bg-transparent outline-none text-sm text-slate-200 placeholder-slate-500 w-48"
+          className="bg-transparent outline-none text-base sm:text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] w-48"
         />
         {query && (
           <button onClick={() => { setQuery(""); setIsOpen(false); }}>
