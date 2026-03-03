@@ -57,8 +57,9 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     const exists = cities.some((c) => c.lat === city.lat && c.lon === city.lon);
     if (!exists) {
       setCities((prev) => [...prev, city]);
-      setSelectedCity(city);
     }
+    setSelectedCity(city);
+    setSelectToken((t) => t + 1);
   };
 
   const removeCity = (city: City) => {
