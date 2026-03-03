@@ -3,6 +3,7 @@
 import { X, Droplets, Wind, Thermometer } from "lucide-react";
 import { useWeather } from "@/hooks/useWeather";
 import { useDashboard } from "@/context/DashboardContext";
+import { WeatherIcon } from "./WeatherIcon";
 import type { City } from "@/lib/types";
 
 function getTempColor(temp: number): string {
@@ -56,15 +57,7 @@ export function CityCard({ city }: CityCardProps) {
       ) : weather ? (
         <>
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-4xl" role="img" aria-label={weather.description}>
-              {weather.main === "Clear" ? "\u2600\uFE0F" :
-               weather.main === "Clouds" ? "\u2601\uFE0F" :
-               weather.main === "Rain" ? "\uD83C\uDF27\uFE0F" :
-               weather.main === "Drizzle" ? "\uD83C\uDF26\uFE0F" :
-               weather.main === "Snow" ? "\u2744\uFE0F" :
-               weather.main === "Thunderstorm" ? "\u26C8\uFE0F" :
-               weather.main === "Fog" ? "\uD83C\uDF2B\uFE0F" : "\uD83C\uDF24\uFE0F"}
-            </span>
+            <WeatherIcon main={weather.main} description={weather.description} size={40} />
             <span
               className={`text-3xl font-bold bg-gradient-to-r ${getTempColor(weather.temp)} bg-clip-text text-transparent`}
             >
