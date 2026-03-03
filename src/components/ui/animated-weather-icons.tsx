@@ -11,7 +11,7 @@ interface WeatherIconProps {
 /* ─── SUN ─── */
 export function SunIcon({ size = 48, className }: WeatherIconProps) {
   return (
-    <motion.svg viewBox="0 0 48 48" fill="none" className={cn("", className)} style={{ width: size, height: size }}>
+    <motion.svg viewBox="0 0 48 48" fill="none" className={cn("", className)} style={{ width: size, height: size, overflow: "visible" }}>
       <motion.g animate={{ rotate: 360 }} transition={{ duration: 12, ease: "linear", repeat: Infinity }}>
         {[0, 45, 90, 135, 180, 225, 270, 315].map((deg) => (
           <motion.line key={deg} x1="24" y1="6" x2="24" y2="10" stroke="#FBBF24" strokeWidth={2} strokeLinecap="round"
@@ -34,7 +34,7 @@ export function MoonIcon({ size = 48, className }: WeatherIconProps) {
     { cx: 30, cy: 6, d: 1 }, { cx: 40, cy: 12, d: 1.5 },
   ];
   return (
-    <svg viewBox="0 0 48 48" fill="none" className={cn("", className)} style={{ width: size, height: size }}>
+    <svg viewBox="0 0 48 48" fill="none" className={cn("", className)} style={{ width: size, height: size, overflow: "visible" }}>
       <path d="M28 8a14 14 0 100 28 10 10 0 01 0-28z" fill="#A78BFA" opacity={0.15} />
       <path d="M28 8a14 14 0 100 28 10 10 0 01 0-28z" stroke="#A78BFA" strokeWidth={2} strokeLinecap="round" />
       {stars.map((s) => (
@@ -49,7 +49,7 @@ export function MoonIcon({ size = 48, className }: WeatherIconProps) {
 /* ─── CLOUD ─── */
 export function CloudIcon({ size = 48, className }: WeatherIconProps) {
   return (
-    <svg viewBox="0 0 48 48" fill="none" className={cn("", className)} style={{ width: size, height: size }}>
+    <svg viewBox="0 0 48 48" fill="none" className={cn("", className)} style={{ width: size, height: size, overflow: "visible" }}>
       <motion.g animate={{ x: [0, 2, 0, -2, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}>
         <path d="M36 30H14a8 8 0 01-.5-16A10 10 0 0134 16a7 7 0 012 14z" fill="#94A3B8" opacity={0.12} />
         <path d="M36 30H14a8 8 0 01-.5-16A10 10 0 0134 16a7 7 0 012 14z" stroke="#94A3B8" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
@@ -64,7 +64,7 @@ export function RainIcon({ size = 48, className }: WeatherIconProps) {
     { x: 16, d: 0 }, { x: 22, d: 0.3 }, { x: 28, d: 0.6 }, { x: 34, d: 0.15 },
   ];
   return (
-    <svg viewBox="0 0 48 48" fill="none" className={cn("", className)} style={{ width: size, height: size }}>
+    <svg viewBox="0 0 48 48" fill="none" className={cn("", className)} style={{ width: size, height: size, overflow: "visible" }}>
       <path d="M36 22H14a7 7 0 01-.5-14A9 9 0 0134 10a6 6 0 012 12z" fill="#60A5FA" opacity={0.1} />
       <path d="M36 22H14a7 7 0 01-.5-14A9 9 0 0134 10a6 6 0 012 12z" stroke="#60A5FA" strokeWidth={2} strokeLinecap="round" />
       {drops.map((drop) => (
@@ -83,7 +83,7 @@ export function HeavyRainIcon({ size = 48, className }: WeatherIconProps) {
     { x: 29, d: 0.1 }, { x: 34, d: 0.4 }, { x: 37, d: 0.25 },
   ];
   return (
-    <svg viewBox="0 0 48 48" fill="none" className={cn("", className)} style={{ width: size, height: size }}>
+    <svg viewBox="0 0 48 48" fill="none" className={cn("", className)} style={{ width: size, height: size, overflow: "visible" }}>
       <path d="M36 20H14a7 7 0 01-.5-14A9 9 0 0134 8a6 6 0 012 12z" fill="#3B82F6" opacity={0.1} />
       <path d="M36 20H14a7 7 0 01-.5-14A9 9 0 0134 8a6 6 0 012 12z" stroke="#3B82F6" strokeWidth={2} strokeLinecap="round" />
       {drops.map((drop) => (
@@ -102,7 +102,7 @@ export function SnowIcon({ size = 48, className }: WeatherIconProps) {
     { x: 34, d: 0.7 }, { x: 19, d: 1.0 }, { x: 31, d: 0.4 },
   ];
   return (
-    <svg viewBox="0 0 48 48" fill="none" className={cn("", className)} style={{ width: size, height: size }}>
+    <svg viewBox="0 0 48 48" fill="none" className={cn("", className)} style={{ width: size, height: size, overflow: "visible" }}>
       <path d="M36 22H14a7 7 0 01-.5-14A9 9 0 0134 10a6 6 0 012 12z" fill="#CBD5E1" opacity={0.15} />
       <path d="M36 22H14a7 7 0 01-.5-14A9 9 0 0134 10a6 6 0 012 12z" stroke="#CBD5E1" strokeWidth={2} strokeLinecap="round" />
       {flakes.map((f, i) => (
@@ -117,7 +117,7 @@ export function SnowIcon({ size = 48, className }: WeatherIconProps) {
 /* ─── THUNDER ─── */
 export function ThunderIcon({ size = 48, className }: WeatherIconProps) {
   return (
-    <svg viewBox="0 0 48 48" fill="none" className={cn("", className)} style={{ width: size, height: size }}>
+    <svg viewBox="0 0 48 48" fill="none" className={cn("", className)} style={{ width: size, height: size, overflow: "visible" }}>
       <path d="M36 20H14a7 7 0 01-.5-14A9 9 0 0134 8a6 6 0 012 12z" fill="#F59E0B" opacity={0.08} />
       <path d="M36 20H14a7 7 0 01-.5-14A9 9 0 0134 8a6 6 0 012 12z" stroke="#94A3B8" strokeWidth={2} strokeLinecap="round" />
       <motion.path d="M26 20l-3 8h6l-3 10" stroke="#F59E0B" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"
@@ -133,7 +133,7 @@ export function ThunderIcon({ size = 48, className }: WeatherIconProps) {
 /* ─── WIND ─── */
 export function WindIcon({ size = 48, className }: WeatherIconProps) {
   return (
-    <svg viewBox="0 0 48 48" fill="none" className={cn("", className)} style={{ width: size, height: size }}>
+    <svg viewBox="0 0 48 48" fill="none" className={cn("", className)} style={{ width: size, height: size, overflow: "visible" }}>
       <motion.path d="M6 18h26a4 4 0 000-8" stroke="#94A3B8" strokeWidth={2} strokeLinecap="round"
         animate={{ pathLength: [0, 1] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }} />
       <motion.path d="M6 24h32a3 3 0 010 6" stroke="#94A3B8" strokeWidth={2} strokeLinecap="round"
@@ -151,7 +151,7 @@ export function FogIcon({ size = 48, className }: WeatherIconProps) {
     { y: 28, w: 24, d: 1.0 }, { y: 34, w: 30, d: 1.5 },
   ];
   return (
-    <svg viewBox="0 0 48 48" fill="none" className={cn("", className)} style={{ width: size, height: size }}>
+    <svg viewBox="0 0 48 48" fill="none" className={cn("", className)} style={{ width: size, height: size, overflow: "visible" }}>
       {lines.map((l) => (
         <motion.line key={l.y} x1={24 - l.w / 2} y1={l.y} x2={24 + l.w / 2} y2={l.y}
           stroke="#94A3B8" strokeWidth={2.5} strokeLinecap="round"
@@ -165,7 +165,7 @@ export function FogIcon({ size = 48, className }: WeatherIconProps) {
 /* ─── PARTLY CLOUDY ─── */
 export function PartlyCloudyIcon({ size = 48, className }: WeatherIconProps) {
   return (
-    <svg viewBox="0 0 48 48" fill="none" className={cn("", className)} style={{ width: size, height: size }}>
+    <svg viewBox="0 0 48 48" fill="none" className={cn("", className)} style={{ width: size, height: size, overflow: "visible" }}>
       <motion.g animate={{ rotate: 360 }} transition={{ duration: 20, ease: "linear", repeat: Infinity }}
         style={{ transformOrigin: "16px 16px" }}>
         {[0, 60, 120, 180, 240, 300].map((deg) => (
@@ -185,7 +185,7 @@ export function PartlyCloudyIcon({ size = 48, className }: WeatherIconProps) {
 /* ─── SUNRISE ─── */
 export function SunriseIcon({ size = 48, className }: WeatherIconProps) {
   return (
-    <svg viewBox="0 0 48 48" fill="none" className={cn("", className)} style={{ width: size, height: size }}>
+    <svg viewBox="0 0 48 48" fill="none" className={cn("", className)} style={{ width: size, height: size, overflow: "visible" }}>
       <line x1="6" y1="34" x2="42" y2="34" stroke="#94A3B8" strokeWidth={2} strokeLinecap="round" />
       <motion.g animate={{ y: [4, 0] }} transition={{ duration: 3, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}>
         <path d="M12 34a12 12 0 0124 0" fill="#FBBF24" opacity={0.15} />
@@ -212,7 +212,7 @@ export function RainbowIcon({ size = 48, className }: WeatherIconProps) {
     { r: 7, color: "#3B82F6", d: 0.3 },
   ];
   return (
-    <svg viewBox="0 0 48 48" fill="none" className={cn("", className)} style={{ width: size, height: size }}>
+    <svg viewBox="0 0 48 48" fill="none" className={cn("", className)} style={{ width: size, height: size, overflow: "visible" }}>
       {arcs.map((arc) => (
         <motion.path key={arc.r}
           d={`M${24 - arc.r} 34a${arc.r} ${arc.r} 0 01${arc.r * 2} 0`}
