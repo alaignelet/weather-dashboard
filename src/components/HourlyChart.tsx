@@ -7,7 +7,6 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  CartesianGrid,
   Cell,
 } from "recharts";
 import { Clock } from "lucide-react";
@@ -15,11 +14,27 @@ import { useForecast } from "@/hooks/useForecast";
 import { useDashboard } from "@/context/DashboardContext";
 
 function getTempBarColor(temp: number): string {
-  if (temp <= 0) return "#3b82f6";
-  if (temp <= 10) return "#06b6d4";
-  if (temp <= 20) return "#22c55e";
-  if (temp <= 30) return "#f97316";
-  return "#ef4444";
+  if (temp <= 0) return "#60a5fa";
+  if (temp <= 10) return "#22d3ee";
+  if (temp <= 20) return "#4ade80";
+  if (temp <= 30) return "#fb923c";
+  return "#f87171";
+}
+
+function CustomTooltip({ active, payload, label }: { active?: boolean; payload?: { value: number }[]; label?: string }) {
+  if (!active || !payload?.length) return null;
+  return (
+    <div style={{
+      background: "rgba(15, 23, 42, 0.9)",
+      backdropFilter: "blur(12px)",
+      border: "1px solid rgba(255,255,255,0.1)",
+      borderRadius: 8,
+      padding: "8px 12px",
+    }}>
+      <div style={{ fontSize: 11, color: "#94a3b8", marginBottom: 2 }}>{label}</div>
+      <div style={{ fontSize: 16, fontWeight: 700, color: "#f1f5f9" }}>{payload[0].value}°C</div>
+    </div>
+  );
 }
 
 export function HourlyChart() {
@@ -31,7 +46,7 @@ export function HourlyChart() {
 
   if (!selectedCity) {
     return (
-      <div className="glass-card p-6 flex items-center justify-center h-[300px] text-slate-500">
+      <div className="glass-card p-6 flex items-center justify-center h-[300px] text-[var(--text-muted)]">
         Select a city to view hourly data
       </div>
     );
@@ -52,7 +67,7 @@ export function HourlyChart() {
       <div className="flex items-center gap-2 mb-4">
         <Clock className="w-5 h-5 text-blue-400" />
         <h2 className="font-semibold">Next 24 Hours</h2>
-        <span className="text-xs text-slate-400 ml-auto">{selectedCity.name}</span>
+        <span className="text-xs text-[var(--text-muted)] ml-auto">{selectedCity.name}</span>
       </div>
 
       {isLoading ? (
@@ -61,30 +76,24 @@ export function HourlyChart() {
         </div>
       ) : (
         <ResponsiveContainer width="100%" height={220}>
-          <BarChart data={hourlyData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+          <BarChart data={hourlyData} barCategoryGap="20%">
             <XAxis
               dataKey="time"
-              tick={{ fill: "#94a3b8", fontSize: 12 }}
-              axisLine={{ stroke: "rgba(255,255,255,0.1)" }}
+              tick={{ fill: "var(--text-muted)", fontSize: 11 }}
+              axisLine={false}
+              tickLine={false}
             />
             <YAxis
-              tick={{ fill: "#94a3b8", fontSize: 12 }}
-              axisLine={{ stroke: "rgba(255,255,255,0.1)" }}
+              tick={{ fill: "var(--text-muted)", fontSize: 11 }}
+              axisLine={false}
+              tickLine={false}
               tickFormatter={(v) => `${v}°`}
+              width={35}
             />
-            <Tooltip
-              contentStyle={{
-                backgroundColor: "#1e293b",
-                border: "1px solid rgba(255,255,255,0.1)",
-                borderRadius: "0.5rem",
-                color: "#e2e8f0",
-              }}
-              formatter={(value: number | undefined) => [`${value ?? 0}°C`, "Temperature"]}
-            />
-            <Bar dataKey="temp" radius={[4, 4, 0, 0]}>
+            <Tooltip content={<CustomTooltip />} cursor={false} />
+            <Bar dataKey="temp" radius={[6, 6, 0, 0]}>
               {hourlyData.map((entry, index) => (
-                <Cell key={index} fill={getTempBarColor(entry.temp)} />
+                <Cell key={index} fill={getTempBarColor(entry.temp)} fillOpacity={0.85} />
               ))}
             </Bar>
           </BarChart>

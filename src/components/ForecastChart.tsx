@@ -2,18 +2,43 @@
 
 import {
   ResponsiveContainer,
-  LineChart,
   Line,
   XAxis,
   YAxis,
   Tooltip,
-  CartesianGrid,
   Area,
   ComposedChart,
 } from "recharts";
 import { CalendarDays } from "lucide-react";
 import { useForecast } from "@/hooks/useForecast";
 import { useDashboard } from "@/context/DashboardContext";
+
+function CustomTooltip({ active, payload, label }: { active?: boolean; payload?: { value: number; dataKey: string }[]; label?: string }) {
+  if (!active || !payload?.length) return null;
+  const high = payload.find((p) => p.dataKey === "temp_max");
+  const low = payload.find((p) => p.dataKey === "temp_min");
+  return (
+    <div style={{
+      background: "rgba(15, 23, 42, 0.9)",
+      backdropFilter: "blur(12px)",
+      border: "1px solid rgba(255,255,255,0.1)",
+      borderRadius: 8,
+      padding: "8px 12px",
+    }}>
+      <div style={{ fontSize: 11, color: "#94a3b8", marginBottom: 4 }}>{label}</div>
+      {high && (
+        <div style={{ fontSize: 13, color: "#fb923c", fontWeight: 600 }}>
+          High: {Math.round(high.value)}°C
+        </div>
+      )}
+      {low && (
+        <div style={{ fontSize: 13, color: "#60a5fa", fontWeight: 600 }}>
+          Low: {Math.round(low.value)}°C
+        </div>
+      )}
+    </div>
+  );
+}
 
 export function ForecastChart() {
   const { selectedCity } = useDashboard();
@@ -24,7 +49,7 @@ export function ForecastChart() {
 
   if (!selectedCity) {
     return (
-      <div className="glass-card p-6 flex items-center justify-center h-[300px] text-slate-500">
+      <div className="glass-card p-6 flex items-center justify-center h-[300px] text-[var(--text-muted)]">
         Select a city to view forecast
       </div>
     );
@@ -66,7 +91,7 @@ export function ForecastChart() {
       <div className="flex items-center gap-2 mb-4">
         <CalendarDays className="w-5 h-5 text-blue-400" />
         <h2 className="font-semibold">5-Day Forecast</h2>
-        <span className="text-xs text-slate-400 ml-auto">{selectedCity.name}</span>
+        <span className="text-xs text-[var(--text-muted)] ml-auto">{selectedCity.name}</span>
       </div>
 
       {isLoading ? (
@@ -76,49 +101,42 @@ export function ForecastChart() {
       ) : (
         <ResponsiveContainer width="100%" height={220}>
           <ComposedChart data={dailyData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
             <XAxis
               dataKey="date"
-              tick={{ fill: "#94a3b8", fontSize: 12 }}
-              axisLine={{ stroke: "rgba(255,255,255,0.1)" }}
+              tick={{ fill: "var(--text-muted)", fontSize: 11 }}
+              axisLine={false}
+              tickLine={false}
             />
             <YAxis
-              tick={{ fill: "#94a3b8", fontSize: 12 }}
-              axisLine={{ stroke: "rgba(255,255,255,0.1)" }}
+              tick={{ fill: "var(--text-muted)", fontSize: 11 }}
+              axisLine={false}
+              tickLine={false}
               tickFormatter={(v) => `${Math.round(v)}°`}
+              width={35}
             />
-            <Tooltip
-              contentStyle={{
-                backgroundColor: "#1e293b",
-                border: "1px solid rgba(255,255,255,0.1)",
-                borderRadius: "0.5rem",
-                color: "#e2e8f0",
-              }}
-              formatter={(value: number | undefined, name: string | undefined) => [
-                `${Math.round(value ?? 0)}°C`,
-                name === "temp_max" ? "High" : name === "temp_min" ? "Low" : "Precip",
-              ]}
+            <Tooltip content={<CustomTooltip />} cursor={false} />
+            <Area
+              type="monotone"
+              dataKey="pop"
+              fill="rgba(59,130,246,0.08)"
+              stroke="none"
+              yAxisId={0}
             />
             <Line
               type="monotone"
               dataKey="temp_max"
-              stroke="#f97316"
+              stroke="#fb923c"
               strokeWidth={2}
-              dot={{ fill: "#f97316", r: 4 }}
+              dot={{ fill: "#fb923c", r: 4, strokeWidth: 0 }}
+              activeDot={{ r: 6, fill: "#fb923c", strokeWidth: 0 }}
             />
             <Line
               type="monotone"
               dataKey="temp_min"
-              stroke="#3b82f6"
+              stroke="#60a5fa"
               strokeWidth={2}
-              dot={{ fill: "#3b82f6", r: 4 }}
-            />
-            <Area
-              type="monotone"
-              dataKey="pop"
-              fill="rgba(59,130,246,0.1)"
-              stroke="none"
-              yAxisId={0}
+              dot={{ fill: "#60a5fa", r: 4, strokeWidth: 0 }}
+              activeDot={{ r: 6, fill: "#60a5fa", strokeWidth: 0 }}
             />
           </ComposedChart>
         </ResponsiveContainer>

@@ -29,14 +29,16 @@ export function CityCard({ city }: CityCardProps) {
       role="button"
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") selectCity(city); }}
-      className={`glass-card p-4 min-w-[200px] text-left transition-all duration-300 hover:bg-white/10 cursor-pointer ${
-        isSelected ? "ring-2 ring-blue-400/50 bg-white/10" : ""
+      className={`glass-card p-4 min-w-[200px] text-left transition-all duration-300 cursor-pointer ${
+        isSelected
+          ? "!border-2 !border-blue-400/70"
+          : "hover:border-[var(--card-border)]"
       }`}
     >
       <div className="flex items-start justify-between mb-3">
         <div>
           <h3 className="font-semibold text-sm">{city.name}</h3>
-          <p className="text-xs text-slate-400">{city.country}</p>
+          <p className="text-xs text-[var(--text-muted)]">{city.country}</p>
         </div>
         <button
           onClick={(e) => {
@@ -64,8 +66,8 @@ export function CityCard({ city }: CityCardProps) {
               {Math.round(weather.temp)}°
             </span>
           </div>
-          <p className="text-xs text-slate-300 capitalize mb-3">{weather.description}</p>
-          <div className="flex gap-3 text-xs text-slate-400">
+          <p className="text-xs text-[var(--text-secondary)] capitalize mb-3">{weather.description}</p>
+          <div className="flex gap-3 text-xs text-[var(--text-muted)]">
             <span className="flex items-center gap-1">
               <Thermometer className="w-3 h-3" />
               {Math.round(weather.feels_like)}°

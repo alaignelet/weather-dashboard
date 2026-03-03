@@ -73,7 +73,7 @@ function mergeAllCities(userCities: City[]): City[] {
 }
 
 export function WeatherMap() {
-  const { selectedCity, cities } = useDashboard();
+  const { selectedCity, selectToken, cities } = useDashboard();
   const [markers, setMarkers] = useState<Map<string, CityMarker>>(new Map());
 
   const allCities = mergeAllCities(cities);
@@ -94,7 +94,7 @@ export function WeatherMap() {
   };
 
   return (
-    <div className="glass-card p-6 overflow-hidden">
+    <div className="glass-card p-6 overflow-hidden h-full flex flex-col">
       <div className="flex items-center gap-2 mb-4">
         <MapIcon className="w-5 h-5 text-blue-400" />
         <h2 className="font-semibold">Weather Map</h2>
@@ -111,8 +111,8 @@ export function WeatherMap() {
         />
       ))}
 
-      <div className="rounded-lg overflow-hidden h-[300px]">
-        <LeafletMap center={center} markers={Array.from(markers.values())} />
+      <div className="rounded-lg overflow-hidden h-[300px] flex-1 min-h-[300px]">
+        <LeafletMap center={center} selectToken={selectToken} markers={Array.from(markers.values())} />
       </div>
     </div>
   );

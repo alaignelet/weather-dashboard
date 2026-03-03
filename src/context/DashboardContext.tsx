@@ -6,6 +6,7 @@ import type { City } from "@/lib/types";
 interface DashboardState {
   cities: City[];
   selectedCity: City | null;
+  selectToken: number;
   addCity: (city: City) => void;
   removeCity: (city: City) => void;
   selectCity: (city: City) => void;
@@ -24,6 +25,7 @@ const DEFAULT_CITIES: City[] = [
 export function DashboardProvider({ children }: { children: ReactNode }) {
   const [cities, setCities] = useState<City[]>(DEFAULT_CITIES);
   const [selectedCity, setSelectedCity] = useState<City | null>(null);
+  const [selectToken, setSelectToken] = useState(0);
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
@@ -66,10 +68,13 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const selectCity = (city: City) => setSelectedCity(city);
+  const selectCity = (city: City) => {
+    setSelectedCity(city);
+    setSelectToken((t) => t + 1);
+  };
 
   return (
-    <DashboardContext.Provider value={{ cities, selectedCity, addCity, removeCity, selectCity }}>
+    <DashboardContext.Provider value={{ cities, selectedCity, selectToken, addCity, removeCity, selectCity }}>
       {children}
     </DashboardContext.Provider>
   );
