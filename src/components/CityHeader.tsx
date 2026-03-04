@@ -54,7 +54,7 @@ export function CityHeader() {
 
       {/* Content */}
       <div className="relative h-full flex flex-col justify-end p-4 sm:p-6 lg:p-10">
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 sm:gap-6">
           <div>
             <div className="flex items-center gap-3 mb-2">
               <MapPin className="w-7 h-7" style={{ color: isDark ? "rgba(255,255,255,0.8)" : "rgba(0,0,0,0.7)" }} />
@@ -88,7 +88,7 @@ export function CityHeader() {
           </div>
           {weather && (
             <div
-              className="flex items-center gap-6 lg:gap-8 p-4 lg:p-6 rounded-3xl"
+              className="flex items-center gap-6 lg:gap-8 p-4 lg:p-6 rounded-3xl self-end"
               style={{
                 background: isDark ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.5)",
                 backdropFilter: "blur(12px)",
