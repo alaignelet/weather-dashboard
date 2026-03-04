@@ -46,6 +46,9 @@ body {
 }
 
 /* Theme-aware hover for ranking rows */
+.hover-row {
+  transition: background 150ms ease;
+}
 .hover-row:hover {
   background: var(--card-border);
 }
