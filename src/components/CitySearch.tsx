@@ -42,7 +42,8 @@ export function CitySearch() {
           }}
           onFocus={() => setIsOpen(true)}
           placeholder="Search city..."
-          className="bg-transparent outline-none text-base sm:text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] w-full sm:w-48"
+          aria-label="Search city"
+          className="bg-transparent outline-none focus:ring-0 text-base sm:text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] w-full sm:w-48"
         />
         {query && (
           <button aria-label="Clear search" onClick={() => { setQuery(""); setIsOpen(false); }}>
