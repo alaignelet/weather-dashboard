@@ -6,7 +6,7 @@ import { Providers } from "./providers";
 const plusJakarta = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "WeatherDash",
+  title: "CloudCast",
   description: "Real-time weather dashboard",
   icons: {
     icon: [
