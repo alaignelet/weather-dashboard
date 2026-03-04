@@ -87,11 +87,13 @@ export function ForecastChart() {
     : [];
 
   return (
-    <div className="glass-card p-4 sm:p-5 h-full flex flex-col">
-      <div className="flex items-center gap-2 mb-4">
-        <CalendarDays className="w-5 h-5 text-[var(--accent-blue)]" />
-        <h2 className="font-semibold">5-Day Forecast</h2>
-        <span className="text-xs text-[var(--text-muted)] ml-auto">{selectedCity.name}</span>
+    <div className="glass-card p-6 lg:p-8 h-full flex flex-col">
+      <div className="flex items-center justify-between mb-6 lg:mb-8">
+        <div className="flex items-center gap-3">
+          <CalendarDays className="w-5 h-5 text-[var(--primary)]" />
+          <h3 className="text-lg lg:text-xl font-bold">Temperature Trend</h3>
+        </div>
+        <span className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">5-Day</span>
       </div>
 
       {isLoading ? (

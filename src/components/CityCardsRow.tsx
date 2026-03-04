@@ -27,7 +27,7 @@ export function CityCardsRow() {
   }
 
   return (
-    <div ref={scrollRef} className="flex gap-4 overflow-x-auto scrollbar-hide pt-1 pb-2 mb-0 px-1">
+    <div ref={scrollRef} className="flex gap-4 lg:gap-6 overflow-x-auto scrollbar-hide pb-6 px-8 lg:px-12 snap-x">
       {cities.map((city) => {
         const key = `${city.lat}-${city.lon}`;
         return (

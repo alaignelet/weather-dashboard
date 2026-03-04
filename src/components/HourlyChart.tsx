@@ -63,11 +63,13 @@ export function HourlyChart() {
     : [];
 
   return (
-    <div className="glass-card p-4 sm:p-5">
-      <div className="flex items-center gap-2 mb-4">
-        <Clock className="w-5 h-5 text-[var(--accent-blue)]" />
-        <h2 className="font-semibold">Next 24 Hours</h2>
-        <span className="text-xs text-[var(--text-muted)] ml-auto">{selectedCity.name}</span>
+    <div className="glass-card p-6 lg:p-8">
+      <div className="flex items-center justify-between mb-6 lg:mb-8">
+        <div className="flex items-center gap-3">
+          <Clock className="w-5 h-5 text-[var(--primary)]" />
+          <h3 className="text-lg lg:text-xl font-bold">Hourly Forecast</h3>
+        </div>
+        <span className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Next 24h</span>
       </div>
 
       {isLoading ? (
@@ -75,7 +77,7 @@ export function HourlyChart() {
           <div className="animate-spin w-6 h-6 border-2 border-[var(--accent-blue)] border-t-transparent rounded-full" />
         </div>
       ) : (
-        <ResponsiveContainer width="100%" height={220}>
+        <ResponsiveContainer width="100%" height={240}>
           <BarChart data={hourlyData} barCategoryGap="20%">
             <XAxis
               dataKey="time"
@@ -91,7 +93,7 @@ export function HourlyChart() {
               width={35}
             />
             <Tooltip content={<CustomTooltip />} cursor={false} />
-            <Bar dataKey="temp" radius={[6, 6, 0, 0]}>
+            <Bar dataKey="temp" radius={[10, 10, 0, 0]}>
               {hourlyData.map((entry, index) => (
                 <Cell key={index} fill={getTempBarColor(entry.temp)} fillOpacity={0.9} />
               ))}

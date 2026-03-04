@@ -29,15 +29,20 @@ export function CityCard({ city }: CityCardProps) {
       role="button"
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") selectCity(city); }}
-      className={`glass-card p-4 min-w-[170px] sm:min-w-[200px] text-left transition-all duration-300 cursor-pointer hover:-translate-y-0.5 ${
+      className={`glass p-4 lg:p-6 min-w-[240px] sm:min-w-[280px] rounded-3xl text-left transition-all duration-300 cursor-pointer snap-center ${
         isSelected
-          ? "ring-2 ring-[var(--accent-blue)]/50 border-[var(--accent-blue)]/30"
-          : ""
+          ? "border-2 border-[var(--primary)]/50 scale-105 shadow-[var(--primary)]/10"
+          : "opacity-80 hover:opacity-100 hover:border-[var(--primary)]/30"
       }`}
     >
       <div className="flex items-start justify-between mb-3">
         <div>
-          <h3 className="font-semibold text-sm leading-tight">{city.name}</h3>
+          {isSelected && (
+            <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[var(--primary)]/20 text-[10px] font-bold text-[var(--primary)] uppercase tracking-wider mb-1">
+              Live Tracking
+            </span>
+          )}
+          <h3 className="font-bold text-base lg:text-lg leading-tight">{city.name}</h3>
           <p className="text-xs text-[var(--text-muted)]">{city.country}</p>
         </div>
         <button

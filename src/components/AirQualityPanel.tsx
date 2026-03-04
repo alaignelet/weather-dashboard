@@ -44,34 +44,36 @@ export function AirQualityPanel() {
 
   if (!selectedCity) {
     return (
-      <div className="glass-card p-4 sm:p-5 flex items-center justify-center h-[300px] text-[var(--text-muted)]">
+      <div className="glass-card p-8 flex items-center justify-center h-[300px] text-[var(--text-muted)]">
         Select a city to view air quality
       </div>
     );
   }
 
   return (
-    <div className="glass-card p-4 sm:p-5">
-      <div className="flex items-center gap-2 mb-4">
-        <Wind className="w-5 h-5 text-[var(--accent-blue)]" />
-        <h2 className="font-semibold">Air Quality</h2>
-        <span className="text-xs text-[var(--text-muted)] ml-auto">{selectedCity.name}</span>
+    <div className="glass-card p-6 lg:p-8 flex flex-col items-center">
+      <div className="w-full flex items-center gap-3 mb-6 lg:mb-8">
+        <Wind className="w-5 h-5 text-emerald-500" />
+        <h3 className="text-lg lg:text-xl font-bold">Air Quality</h3>
       </div>
 
       {isLoading ? (
         <div className="h-[220px] flex items-center justify-center">
-          <div className="animate-spin w-6 h-6 border-2 border-[var(--accent-blue)] border-t-transparent rounded-full" />
+          <div className="animate-spin w-6 h-6 border-2 border-[var(--primary)] border-t-transparent rounded-full" />
         </div>
       ) : airQuality ? (
-        <div className="space-y-4">
+        <>
           <AQIGauge aqi={airQuality.aqi} />
-          <div className="space-y-3 mt-4">
+          <p className="text-center text-sm text-[var(--text-muted)] mt-6 lg:mt-8 font-medium">
+            PM2.5: {airQuality.components.pm2_5.toFixed(1)} µg/m³
+          </p>
+          <div className="w-full space-y-3 mt-4">
             <PollutantBar label="PM2.5" value={airQuality.components.pm2_5} max={75} unit="µg/m³" />
             <PollutantBar label="PM10" value={airQuality.components.pm10} max={150} unit="µg/m³" />
             <PollutantBar label="O₃" value={airQuality.components.o3} max={180} unit="µg/m³" />
             <PollutantBar label="NO₂" value={airQuality.components.no2} max={200} unit="µg/m³" />
           </div>
-        </div>
+        </>
       ) : (
         <p className="text-[var(--text-muted)] text-sm">No air quality data available</p>
       )}

@@ -31,7 +31,7 @@ export function CitySearch() {
 
   return (
     <div ref={ref} className="relative">
-      <div className="flex items-center gap-2 glass-card px-3 py-2">
+      <div className="flex items-center gap-2 glass rounded-2xl px-4 py-2.5">
         <Search className="w-4 h-4 text-[var(--text-muted)]" />
         <input
           type="text"
@@ -41,9 +41,9 @@ export function CitySearch() {
             setIsOpen(true);
           }}
           onFocus={() => setIsOpen(true)}
-          placeholder="Search city..."
+          placeholder="Search global cities..."
           aria-label="Search city"
-          className="bg-transparent outline-none focus:ring-0 text-base sm:text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] w-full sm:w-48"
+          className="bg-transparent outline-none focus:ring-0 text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] w-full"
         />
         {query && (
           <button aria-label="Clear search" onClick={() => { setQuery(""); setIsOpen(false); }}>
@@ -53,7 +53,7 @@ export function CitySearch() {
       </div>
 
       {isOpen && results && results.length > 0 && (
-        <div className="absolute top-full mt-2 w-full glass-card p-2 z-50 max-h-[240px] overflow-y-auto">
+        <div className="absolute top-full mt-2 w-full glass rounded-2xl p-2 z-50 max-h-[240px] overflow-y-auto">
           {results.map((city, i) => (
             <button
               key={`${city.lat}-${city.lon}-${i}`}

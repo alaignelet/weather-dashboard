@@ -123,15 +123,15 @@ export function TemperatureRanking() {
   const selectedKey = selectedCity ? `${selectedCity.lat}-${selectedCity.lon}` : null;
 
   return (
-    <div className="glass-card p-4 sm:p-5 h-full flex flex-col">
+    <div className="glass-card p-6 lg:p-8 h-full flex flex-col">
       {/* Always render collectors for ALL cities — stable hook count */}
       {WORLD_CITIES.map((city) => (
         <TempCollector key={`col-${city.lat}-${city.lon}`} city={city} onTemp={handleTemp} />
       ))}
 
-      <div className="flex items-center gap-2 mb-4">
+      <div className="flex items-center gap-3 mb-6">
         <Trophy className="w-5 h-5 text-yellow-400" />
-        <h2 className="font-semibold">Temperature Ranking</h2>
+        <h3 className="text-lg lg:text-xl font-bold">Temperature Ranking</h3>
         <span className="text-xs text-[var(--text-muted)] ml-auto">{filtered.length} cities</span>
       </div>
 
@@ -141,10 +141,10 @@ export function TemperatureRanking() {
           <button
             key={z.key}
             onClick={() => setZone(z.key)}
-            className={`px-3 py-1 text-xs rounded-full transition-all duration-200 ${
+            className={`px-4 py-2 text-xs font-bold rounded-2xl transition-all duration-200 border ${
               zone === z.key
-                ? "bg-[var(--accent-blue)]/20 text-[var(--accent-blue)] border border-[var(--accent-blue)]/50"
-                : "bg-[var(--hover-bg)] text-[var(--text-secondary)] border border-transparent hover-row"
+                ? "bg-[var(--primary)]/20 text-[var(--primary)] border-[var(--primary)]/50"
+                : "bg-[var(--hover-bg)] text-[var(--text-secondary)] border-[var(--card-border)] hover-row"
             }`}
           >
             {z.label}

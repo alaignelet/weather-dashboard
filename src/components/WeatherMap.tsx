@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Map as MapIcon } from "lucide-react";
 import { useDashboard } from "@/context/DashboardContext";
 import { useWeather } from "@/hooks/useWeather";
 import dynamic from "next/dynamic";
@@ -77,15 +76,7 @@ export function WeatherMap() {
   };
 
   return (
-    <div className="glass-card p-4 sm:p-5 overflow-hidden h-full flex flex-col">
-      <div className="flex items-center gap-2 mb-4">
-        <MapIcon className="w-5 h-5 text-[var(--accent-blue)]" />
-        <h2 className="font-semibold">Weather Map</h2>
-        <span className="text-xs text-[var(--text-muted)] ml-auto">
-          {allCities.length} cities worldwide
-        </span>
-      </div>
-
+    <div className="relative h-full w-full overflow-hidden">
       {allCities.map((city) => (
         <CityMarkerData
           key={`${city.lat}-${city.lon}`}
@@ -94,9 +85,12 @@ export function WeatherMap() {
         />
       ))}
 
-      <div className="rounded-lg overflow-hidden h-[300px] flex-1 min-h-[300px]">
-        <LeafletMap center={center} selectToken={selectToken} markers={Array.from(markers.values())} onMarkerClick={handleMarkerClick} />
-      </div>
+      <LeafletMap
+        center={center}
+        selectToken={selectToken}
+        markers={Array.from(markers.values())}
+        onMarkerClick={handleMarkerClick}
+      />
     </div>
   );
 }
