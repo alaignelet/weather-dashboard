@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 
+function isUnwantedImage(url: string): boolean {
+  const lower = url.toLowerCase();
+  return /flag|coat.of.arms|emblem|seal.of|escudo|blason|crest|banner|logo|shield/.test(lower);
+}
+
 async function fetchWikipediaImage(query: string): Promise<string | null> {
   try {
     const res = await fetch(
@@ -9,7 +14,9 @@ async function fetchWikipediaImage(query: string): Promise<string | null> {
     if (!res.ok) return null;
     const data = await res.json();
     if (data.type === "disambiguation") return null;
-    return data.originalimage?.source || data.thumbnail?.source || null;
+    const url = data.originalimage?.source || data.thumbnail?.source || null;
+    if (url && isUnwantedImage(url)) return null;
+    return url;
   } catch {
     return null;
   }
