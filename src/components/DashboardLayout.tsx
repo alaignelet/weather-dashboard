@@ -97,13 +97,6 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
 
         <div className="flex items-center gap-4 lg:gap-6 ml-auto">
           <ThemeToggle />
-          <div className="h-10 w-10 rounded-2xl p-0.5" style={{ background: "linear-gradient(135deg, var(--primary), var(--accent))" }}>
-            <div className="w-full h-full rounded-[14px] bg-[var(--content-bg)] flex items-center justify-center">
-              <span className="text-xs font-bold bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] bg-clip-text text-transparent">
-                WD
-              </span>
-            </div>
-          </div>
         </div>
       </header>
 
