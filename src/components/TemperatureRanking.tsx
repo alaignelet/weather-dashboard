@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo, memo } from "react";
 import { Trophy } from "lucide-react";
 import { useWeather } from "@/hooks/useWeather";
+import { useDashboard } from "@/context/DashboardContext";
 import { WeatherIcon } from "./WeatherIcon";
 import { WORLD_CITIES, ZONES, type Zone, type ZonedCity } from "@/lib/cities";
 
@@ -33,7 +34,17 @@ function TempCollector({
   return null;
 }
 
-function CityRow({ city, rank }: { city: ZonedCity; rank: number }) {
+const CityRow = memo(function CityRow({
+  city,
+  rank,
+  isSelected,
+  onSelect,
+}: {
+  city: ZonedCity;
+  rank: number;
+  isSelected: boolean;
+  onSelect: (city: ZonedCity) => void;
+}) {
   const { data: weather, isLoading } = useWeather(city.lat, city.lon);
 
   if (isLoading) {
@@ -51,7 +62,15 @@ function CityRow({ city, rank }: { city: ZonedCity; rank: number }) {
   if (!weather) return null;
 
   return (
-    <div className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/5 transition-colors">
+    <div
+      onClick={() => onSelect(city)}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") onSelect(city); }}
+      className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer border ${
+        isSelected ? "bg-blue-500/15 border-blue-400/50" : "border-transparent hover-row"
+      }`}
+    >
       <span className="w-6 text-center text-xs font-bold text-[var(--text-muted)]">{rank}</span>
       <WeatherIcon main={weather.main} description={weather.description} size={22} />
       <div className="flex-1 min-w-0">
@@ -65,11 +84,12 @@ function CityRow({ city, rank }: { city: ZonedCity; rank: number }) {
       </span>
     </div>
   );
-}
+});
 
 export function TemperatureRanking() {
   const [zone, setZone] = useState<Zone>("world");
   const [temps, setTemps] = useState<Map<string, number>>(new Map());
+  const { addCity, selectedCity } = useDashboard();
 
   const handleTemp = useCallback((key: string, temp: number) => {
     setTemps((prev) => {
@@ -80,13 +100,27 @@ export function TemperatureRanking() {
     });
   }, []);
 
-  const filtered = zone === "world" ? WORLD_CITIES : WORLD_CITIES.filter((c) => c.zone === zone);
+  const handleSelect = useCallback(
+    (city: ZonedCity) => addCity(city),
+    [addCity],
+  );
 
-  const sorted = [...filtered].sort((a, b) => {
-    const ta = temps.get(`${a.lat}-${a.lon}`) ?? -Infinity;
-    const tb = temps.get(`${b.lat}-${b.lon}`) ?? -Infinity;
-    return tb - ta;
-  });
+  const filtered = useMemo(
+    () => (zone === "world" ? WORLD_CITIES : WORLD_CITIES.filter((c) => c.zone === zone)),
+    [zone],
+  );
+
+  const sorted = useMemo(
+    () =>
+      [...filtered].sort((a, b) => {
+        const ta = temps.get(`${a.lat}-${a.lon}`) ?? -Infinity;
+        const tb = temps.get(`${b.lat}-${b.lon}`) ?? -Infinity;
+        return tb - ta;
+      }),
+    [filtered, temps],
+  );
+
+  const selectedKey = selectedCity ? `${selectedCity.lat}-${selectedCity.lon}` : null;
 
   return (
     <div className="glass-card p-6 h-full flex flex-col">
@@ -110,7 +144,7 @@ export function TemperatureRanking() {
             className={`px-3 py-1 text-xs rounded-full transition-all duration-200 ${
               zone === z.key
                 ? "bg-blue-500/20 text-blue-400 border border-blue-400/50"
-                : "bg-white/5 text-[var(--text-secondary)] border border-transparent hover:bg-white/10"
+                : "bg-white/5 text-[var(--text-secondary)] border border-transparent hover-row"
             }`}
           >
             {z.label}
@@ -120,7 +154,13 @@ export function TemperatureRanking() {
 
       <div className="flex flex-col gap-1 overflow-y-auto max-h-[400px] scrollbar-hide">
         {sorted.map((city, i) => (
-          <CityRow key={`${city.lat}-${city.lon}`} city={city} rank={i + 1} />
+          <CityRow
+            key={`${city.lat}-${city.lon}`}
+            city={city}
+            rank={i + 1}
+            isSelected={`${city.lat}-${city.lon}` === selectedKey}
+            onSelect={handleSelect}
+          />
         ))}
       </div>
     </div>

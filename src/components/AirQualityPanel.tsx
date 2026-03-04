@@ -24,8 +24,11 @@ function PollutantBar({ label, value, max, unit }: PollutantBarProps) {
       </div>
       <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
         <div
-          className="h-full rounded-full bg-gradient-to-r from-green-500 via-yellow-500 to-red-500"
-          style={{ width: `${pct}%` }}
+          className="h-full rounded-full"
+          style={{
+            width: `${pct}%`,
+            background: `linear-gradient(to right, #22c55e ${0}%, #eab308 ${(50 / pct) * 100}%, #ef4444 ${(100 / pct) * 100}%)`,
+          }}
         />
       </div>
     </div>

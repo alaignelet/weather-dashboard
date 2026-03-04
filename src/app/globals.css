@@ -45,6 +45,16 @@ body {
   transition: background 0.3s ease, border-color 0.3s ease;
 }
 
+/* Theme-aware hover for ranking rows */
+.hover-row:hover {
+  background: var(--card-border);
+}
+
+/* Hide Leaflet attribution */
+.leaflet-control-attribution {
+  display: none !important;
+}
+
 /* Custom scrollbar for city cards row */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
