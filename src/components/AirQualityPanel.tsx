@@ -22,7 +22,7 @@ function PollutantBar({ label, value, max, unit }: PollutantBarProps) {
           {value.toFixed(1)} {unit}
         </span>
       </div>
-      <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
+      <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "var(--card-border)" }}>
         <div
           className="h-full rounded-full"
           style={{

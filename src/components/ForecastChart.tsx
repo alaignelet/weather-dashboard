@@ -6,7 +6,6 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  Area,
   ComposedChart,
 } from "recharts";
 import { CalendarDays } from "lucide-react";
@@ -115,14 +114,7 @@ export function ForecastChart() {
               width={35}
             />
             <Tooltip content={<CustomTooltip />} cursor={false} />
-            <Area
-              type="monotone"
-              dataKey="pop"
-              fill="rgba(59,130,246,0.08)"
-              stroke="none"
-              yAxisId={0}
-            />
-            <Line
+<Line
               type="monotone"
               dataKey="temp_max"
               stroke="#fb923c"
