@@ -15,10 +15,30 @@ async function fetchWikipediaImage(query: string): Promise<string | null> {
   }
 }
 
+/** Use Wikipedia's search API to find the best matching article, then get its image. */
+async function fetchWikipediaSearchImage(city: string): Promise<string | null> {
+  try {
+    const res = await fetch(
+      `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(city + " city")}&srlimit=3&format=json`,
+      { next: { revalidate: 86400 } }
+    );
+    if (!res.ok) return null;
+    const data = await res.json();
+    const results = data.query?.search;
+    if (!results?.length) return null;
+    for (const result of results) {
+      const image = await fetchWikipediaImage(result.title);
+      if (image) return image;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
 async function fetchUnsplashImage(city: string): Promise<string | null> {
   const key = process.env.UNSPLASH_ACCESS_KEY;
   if (!key) return null;
-  // Try progressively broader queries
   const queries = [`${city} city`, city];
   for (const query of queries) {
     try {
@@ -43,13 +63,19 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "City required" }, { status: 400 });
   }
 
-  // Try Wikipedia first with multiple query variations
+  // Try Wikipedia direct lookups with multiple query variations
   const queries = [city, `${city} city`, `${city} (city)`];
   for (const query of queries) {
     const imageUrl = await fetchWikipediaImage(query);
     if (imageUrl) {
       return NextResponse.json({ imageUrl });
     }
+  }
+
+  // Try Wikipedia search API as fallback
+  const searchImage = await fetchWikipediaSearchImage(city);
+  if (searchImage) {
+    return NextResponse.json({ imageUrl: searchImage });
   }
 
   // Fallback to Unsplash
