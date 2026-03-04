@@ -26,7 +26,7 @@ export function CityImageCard() {
     <div className="glass-card overflow-hidden h-full min-h-[200px] relative">
       {isLoading ? (
         <div className="h-full flex items-center justify-center">
-          <div className="animate-spin w-6 h-6 border-2 border-blue-400 border-t-transparent rounded-full" />
+          <div className="animate-spin w-6 h-6 border-2 border-[var(--accent-blue)] border-t-transparent rounded-full" />
         </div>
       ) : imageUrl ? (
         <img
