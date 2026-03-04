@@ -118,8 +118,11 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
         <section className="relative h-[50vh] lg:h-[65vh] w-full bg-[var(--background)] overflow-hidden">
           <WeatherMap />
 
-          {/* City Cards Overlay at bottom */}
-          <div className="absolute bottom-0 left-0 right-0 z-20">
+          {/* Gradient fade behind city cards */}
+          <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[var(--background)] to-transparent z-[999] pointer-events-none" />
+
+          {/* City Cards Overlay at bottom - z-[1000] to sit above Leaflet layers */}
+          <div className="absolute bottom-0 left-0 right-0 z-[1000]">
             <CityCardsRow />
           </div>
         </section>

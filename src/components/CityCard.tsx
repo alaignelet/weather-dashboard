@@ -29,6 +29,7 @@ export function CityCard({ city }: CityCardProps) {
       role="button"
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") selectCity(city); }}
+      style={{ backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" }}
       className={`glass p-4 lg:p-6 min-w-[240px] sm:min-w-[280px] rounded-3xl text-left transition-all duration-300 cursor-pointer snap-center ${
         isSelected
           ? "border-2 border-[var(--primary)]/50 scale-105 shadow-[var(--primary)]/10"
