@@ -109,6 +109,14 @@ body {
   display: none !important;
 }
 
+/* Fix tile grid flickering on zoom */
+.leaflet-tile-container img {
+  outline: 1px solid transparent;
+}
+.leaflet-fade-anim .leaflet-tile {
+  will-change: opacity;
+}
+
 /* Custom scrollbar hiding */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;

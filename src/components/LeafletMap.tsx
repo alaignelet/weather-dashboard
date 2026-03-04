@@ -77,7 +77,7 @@ function ThemeTileLayer() {
     map.invalidateSize();
   }, [theme, map]);
 
-  return <TileLayer key={theme} url={url} attribution="" />;
+  return <TileLayer key={theme} url={url} attribution="" keepBuffer={6} updateWhenZooming={false} />;
 }
 
 export default function LeafletMap({ center, selectToken, markers, onMarkerClick }: LeafletMapProps) {
@@ -88,8 +88,10 @@ export default function LeafletMap({ center, selectToken, markers, onMarkerClick
     <MapContainer
       center={center}
       zoom={4}
-      minZoom={4}
-      maxZoom={12}
+      minZoom={5}
+      maxBoundsViscosity={1.0}
+      maxBounds={[[-85, -180], [85, 180]]}
+      maxZoom={8}
       style={{ height: "100%", width: "100%", background: isDark ? "#020617" : "#f8fafc" }}
       zoomControl={false}
     >
