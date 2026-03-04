@@ -67,8 +67,8 @@ const CityRow = memo(function CityRow({
       role="button"
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") onSelect(city); }}
-      className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer border transition-all duration-150 ${
-        isSelected ? "bg-blue-500/15 border-[var(--accent-blue)]/40" : "border-transparent hover-row"
+      className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-colors duration-150 ${
+        isSelected ? "bg-blue-500/15" : "hover:bg-[var(--hover-bg)]"
       }`}
     >
       <span className="w-6 text-center text-xs font-bold text-[var(--text-muted)]">{rank}</span>
