@@ -20,6 +20,14 @@ function MapUpdater({ center, selectToken }: { center: [number, number]; selectT
   return null;
 }
 
+function getTempColor(temp: number): string {
+  if (temp <= 0) return "#2563eb";
+  if (temp <= 10) return "#3b82f6";
+  if (temp <= 20) return "#22d3ee";
+  if (temp <= 30) return "#fb923c";
+  return "#ef4444";
+}
+
 function createWeatherIcon(main: string, temp: number, isDark: boolean, isSelected: boolean) {
   const { svg, color } = getWeatherIconSvg(main);
   const bg = isSelected
@@ -28,7 +36,7 @@ function createWeatherIcon(main: string, temp: number, isDark: boolean, isSelect
   const border = isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.12)";
   const shadow = isDark ? "rgba(0,0,0,0.3)" : "rgba(0,0,0,0.1)";
   const textColor = isDark ? "#e2e8f0" : "#1e293b";
-  const tempColor = color;
+  const tempColor = isSelected ? getTempColor(temp) : color;
   const scale = isSelected ? "scale(1.3)" : "scale(1)";
   const blur = isSelected ? "blur(16px)" : "blur(8px)";
   const boxShadow = isSelected
