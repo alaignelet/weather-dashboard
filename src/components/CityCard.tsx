@@ -29,15 +29,15 @@ export function CityCard({ city }: CityCardProps) {
       role="button"
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") selectCity(city); }}
-      className={`glass-card p-4 min-w-[200px] text-left transition-all duration-300 cursor-pointer ${
+      className={`glass-card p-4 min-w-[170px] sm:min-w-[200px] text-left transition-all duration-300 cursor-pointer hover:-translate-y-0.5 ${
         isSelected
-          ? "!border-2 !border-blue-400/70"
-          : "hover:border-[var(--card-border)]"
+          ? "ring-2 ring-[var(--accent-blue)]/50 border-[var(--accent-blue)]/30"
+          : ""
       }`}
     >
       <div className="flex items-start justify-between mb-3">
         <div>
-          <h3 className="font-semibold text-sm">{city.name}</h3>
+          <h3 className="font-semibold text-sm leading-tight">{city.name}</h3>
           <p className="text-xs text-[var(--text-muted)]">{city.country}</p>
         </div>
         <button
@@ -45,7 +45,8 @@ export function CityCard({ city }: CityCardProps) {
             e.stopPropagation();
             removeCity(city);
           }}
-          className="text-slate-500 hover:text-slate-200 transition-colors"
+          aria-label={`Remove ${city.name}`}
+          className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
         >
           <X className="w-4 h-4" />
         </button>
@@ -53,15 +54,15 @@ export function CityCard({ city }: CityCardProps) {
 
       {isLoading ? (
         <div className="animate-pulse space-y-2">
-          <div className="h-8 bg-white/10 rounded w-20" />
-          <div className="h-4 bg-white/10 rounded w-32" />
+          <div className="h-8 bg-[var(--hover-bg)] rounded w-20" />
+          <div className="h-4 bg-[var(--hover-bg)] rounded w-32" />
         </div>
       ) : weather ? (
         <>
           <div className="flex items-center gap-2 mb-2">
             <WeatherIcon main={weather.main} description={weather.description} size={40} />
             <span
-              className={`text-3xl font-bold bg-gradient-to-r ${getTempColor(weather.temp)} bg-clip-text text-transparent`}
+              className={`text-2xl sm:text-3xl font-bold bg-gradient-to-r ${getTempColor(weather.temp)} bg-clip-text text-transparent`}
             >
               {Math.round(weather.temp)}°
             </span>
@@ -83,7 +84,7 @@ export function CityCard({ city }: CityCardProps) {
           </div>
         </>
       ) : (
-        <p className="text-xs text-slate-500">No data</p>
+        <p className="text-xs text-[var(--text-muted)]">No data</p>
       )}
     </div>
   );
