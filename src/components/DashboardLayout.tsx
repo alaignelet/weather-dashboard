@@ -10,6 +10,7 @@ import { WeatherMap } from "./WeatherMap";
 import { AirQualityPanel } from "./AirQualityPanel";
 import { HourlyChart } from "./HourlyChart";
 import { CityImageCard } from "./CityImageCard";
+import { TemperatureRanking } from "./TemperatureRanking";
 
 function ThemeToggle() {
   const { theme, setTheme } = useTheme();
@@ -65,11 +66,14 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
             <CityImageCard />
           </div>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           <ForecastChart />
           <WeatherMap />
           <AirQualityPanel />
           <HourlyChart />
+        </div>
+        <div className="grid grid-cols-1 gap-6">
+          <TemperatureRanking />
         </div>
       </main>
     </div>
