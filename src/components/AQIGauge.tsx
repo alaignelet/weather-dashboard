@@ -29,7 +29,7 @@ export function AQIGauge({ aqi }: AQIGaugeProps) {
         <p className="font-semibold" style={{ color: level.color }}>
           {level.label}
         </p>
-        <p className="text-xs text-slate-400">Air Quality Index</p>
+        <p className="text-xs text-[var(--text-muted)]">Air Quality Index</p>
       </div>
     </div>
   );

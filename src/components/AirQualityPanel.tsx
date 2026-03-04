@@ -17,8 +17,8 @@ function PollutantBar({ label, value, max, unit }: PollutantBarProps) {
   return (
     <div className="space-y-1">
       <div className="flex justify-between text-xs">
-        <span className="text-slate-400">{label}</span>
-        <span className="text-slate-300">
+        <span className="text-[var(--text-secondary)]">{label}</span>
+        <span className="text-[var(--text-primary)]">
           {value.toFixed(1)} {unit}
         </span>
       </div>
@@ -44,18 +44,18 @@ export function AirQualityPanel() {
 
   if (!selectedCity) {
     return (
-      <div className="glass-card p-6 flex items-center justify-center h-[300px] text-slate-500">
+      <div className="glass-card p-4 sm:p-5 flex items-center justify-center h-[300px] text-[var(--text-muted)]">
         Select a city to view air quality
       </div>
     );
   }
 
   return (
-    <div className="glass-card p-6">
+    <div className="glass-card p-4 sm:p-5">
       <div className="flex items-center gap-2 mb-4">
-        <Wind className="w-5 h-5 text-blue-400" />
+        <Wind className="w-5 h-5 text-[var(--accent-blue)]" />
         <h2 className="font-semibold">Air Quality</h2>
-        <span className="text-xs text-slate-400 ml-auto">{selectedCity.name}</span>
+        <span className="text-xs text-[var(--text-muted)] ml-auto">{selectedCity.name}</span>
       </div>
 
       {isLoading ? (
@@ -73,7 +73,7 @@ export function AirQualityPanel() {
           </div>
         </div>
       ) : (
-        <p className="text-slate-500 text-sm">No air quality data available</p>
+        <p className="text-[var(--text-muted)] text-sm">No air quality data available</p>
       )}
     </div>
   );
