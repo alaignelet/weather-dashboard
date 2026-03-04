@@ -25,14 +25,14 @@ function CustomTooltip({ active, payload, label }: { active?: boolean; payload?:
   if (!active || !payload?.length) return null;
   return (
     <div style={{
-      background: "rgba(15, 23, 42, 0.9)",
+      background: "var(--tooltip-bg)",
       backdropFilter: "blur(12px)",
-      border: "1px solid rgba(255,255,255,0.1)",
-      borderRadius: 8,
+      border: "1px solid var(--tooltip-border)",
+      borderRadius: 12,
       padding: "8px 12px",
     }}>
-      <div style={{ fontSize: 11, color: "#94a3b8", marginBottom: 2 }}>{label}</div>
-      <div style={{ fontSize: 16, fontWeight: 700, color: "#f1f5f9" }}>{payload[0].value}°C</div>
+      <div style={{ fontSize: 11, color: "var(--text-muted)", marginBottom: 2 }}>{label}</div>
+      <div style={{ fontSize: 16, fontWeight: 700, color: "var(--tooltip-text)" }}>{payload[0].value}°C</div>
     </div>
   );
 }
@@ -63,9 +63,9 @@ export function HourlyChart() {
     : [];
 
   return (
-    <div className="glass-card p-6">
+    <div className="glass-card p-4 sm:p-5">
       <div className="flex items-center gap-2 mb-4">
-        <Clock className="w-5 h-5 text-blue-400" />
+        <Clock className="w-5 h-5 text-[var(--accent-blue)]" />
         <h2 className="font-semibold">Next 24 Hours</h2>
         <span className="text-xs text-[var(--text-muted)] ml-auto">{selectedCity.name}</span>
       </div>
@@ -93,7 +93,7 @@ export function HourlyChart() {
             <Tooltip content={<CustomTooltip />} cursor={false} />
             <Bar dataKey="temp" radius={[6, 6, 0, 0]}>
               {hourlyData.map((entry, index) => (
-                <Cell key={index} fill={getTempBarColor(entry.temp)} fillOpacity={0.85} />
+                <Cell key={index} fill={getTempBarColor(entry.temp)} fillOpacity={0.9} />
               ))}
             </Bar>
           </BarChart>

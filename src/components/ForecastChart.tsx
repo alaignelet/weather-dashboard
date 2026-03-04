@@ -18,20 +18,21 @@ function CustomTooltip({ active, payload, label }: { active?: boolean; payload?:
   const low = payload.find((p) => p.dataKey === "temp_min");
   return (
     <div style={{
-      background: "rgba(15, 23, 42, 0.9)",
+      background: "var(--tooltip-bg)",
       backdropFilter: "blur(12px)",
-      border: "1px solid rgba(255,255,255,0.1)",
-      borderRadius: 8,
+      border: "1px solid var(--tooltip-border)",
+      borderRadius: 12,
       padding: "8px 12px",
+      color: "var(--tooltip-text)",
     }}>
-      <div style={{ fontSize: 11, color: "#94a3b8", marginBottom: 4 }}>{label}</div>
+      <div style={{ fontSize: 11, color: "var(--text-muted)", marginBottom: 4 }}>{label}</div>
       {high && (
-        <div style={{ fontSize: 13, color: "#fb923c", fontWeight: 600 }}>
+        <div style={{ fontSize: 13, color: "var(--accent-orange)", fontWeight: 600 }}>
           High: {Math.round(high.value)}°C
         </div>
       )}
       {low && (
-        <div style={{ fontSize: 13, color: "#60a5fa", fontWeight: 600 }}>
+        <div style={{ fontSize: 13, color: "var(--accent-blue)", fontWeight: 600 }}>
           Low: {Math.round(low.value)}°C
         </div>
       )}
@@ -86,9 +87,9 @@ export function ForecastChart() {
     : [];
 
   return (
-    <div className="glass-card p-6 h-full flex flex-col">
+    <div className="glass-card p-4 sm:p-5 h-full flex flex-col">
       <div className="flex items-center gap-2 mb-4">
-        <CalendarDays className="w-5 h-5 text-blue-400" />
+        <CalendarDays className="w-5 h-5 text-[var(--accent-blue)]" />
         <h2 className="font-semibold">5-Day Forecast</h2>
         <span className="text-xs text-[var(--text-muted)] ml-auto">{selectedCity.name}</span>
       </div>
