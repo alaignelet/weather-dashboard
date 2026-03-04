@@ -52,9 +52,9 @@ const CityRow = memo(function CityRow({
       <div className="flex items-center gap-3 px-3 py-2 rounded-lg animate-pulse">
         <span className="w-6 text-center text-xs font-bold text-[var(--text-muted)]">{rank}</span>
         <div className="flex-1">
-          <div className="h-4 bg-white/10 rounded w-24" />
+          <div className="h-4 bg-[var(--hover-bg)] rounded w-24" />
         </div>
-        <div className="h-5 bg-white/10 rounded w-10" />
+        <div className="h-5 bg-[var(--hover-bg)] rounded w-10" />
       </div>
     );
   }
@@ -67,8 +67,8 @@ const CityRow = memo(function CityRow({
       role="button"
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") onSelect(city); }}
-      className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer border ${
-        isSelected ? "bg-blue-500/15 border-blue-400/50" : "border-transparent hover-row"
+      className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer border transition-all duration-150 ${
+        isSelected ? "bg-blue-500/15 border-[var(--accent-blue)]/40" : "border-transparent hover-row"
       }`}
     >
       <span className="w-6 text-center text-xs font-bold text-[var(--text-muted)]">{rank}</span>
@@ -123,7 +123,7 @@ export function TemperatureRanking() {
   const selectedKey = selectedCity ? `${selectedCity.lat}-${selectedCity.lon}` : null;
 
   return (
-    <div className="glass-card p-6 h-full flex flex-col">
+    <div className="glass-card p-4 sm:p-5 h-full flex flex-col">
       {/* Always render collectors for ALL cities — stable hook count */}
       {WORLD_CITIES.map((city) => (
         <TempCollector key={`col-${city.lat}-${city.lon}`} city={city} onTemp={handleTemp} />
@@ -144,7 +144,7 @@ export function TemperatureRanking() {
             className={`px-3 py-1 text-xs rounded-full transition-all duration-200 ${
               zone === z.key
                 ? "bg-blue-500/20 text-blue-400 border border-blue-400/50"
-                : "bg-white/5 text-[var(--text-secondary)] border border-transparent hover-row"
+                : "bg-[var(--hover-bg)] text-[var(--text-secondary)] border border-transparent hover-row"
             }`}
           >
             {z.label}
