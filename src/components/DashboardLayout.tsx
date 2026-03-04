@@ -86,8 +86,8 @@ function FABButton() {
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen overflow-x-hidden">
-      {/* Fixed Glass Navbar */}
-      <header className="fixed top-0 left-0 right-0 z-[1100] h-20 flex items-center px-4 sm:px-6 lg:px-8 bg-[var(--nav-bg)] backdrop-blur-xl border-b border-[var(--card-border)]">
+      {/* Glass Navbar — sits behind the map, reappears below it */}
+      <header className="fixed top-0 left-0 right-0 z-[45] h-20 flex items-center px-4 sm:px-6 lg:px-8 bg-[var(--nav-bg)] backdrop-blur-xl border-b border-[var(--card-border)]">
         <div className="flex items-center gap-3 mr-8 lg:mr-12 cursor-pointer group">
           <div
             className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform"
@@ -116,14 +116,14 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
       </header>
 
       {/* Mobile search */}
-      <div className="md:hidden fixed top-20 left-0 right-0 z-[1100] px-4 py-3 bg-[var(--nav-bg)] backdrop-blur-xl border-b border-[var(--card-border)]">
+      <div className="md:hidden fixed top-20 left-0 right-0 z-[45] px-4 py-3 bg-[var(--nav-bg)] backdrop-blur-xl border-b border-[var(--card-border)]">
         <CitySearch />
       </div>
 
       {/* Main content */}
       <main className="pt-20">
         {/* Map Hero Section */}
-        <section className="relative h-[60vh] sm:h-[50vh] lg:h-[65vh] w-full bg-[var(--background)] overflow-hidden">
+        <section className="relative z-[50] h-[60vh] sm:h-[50vh] lg:h-[65vh] w-full bg-[var(--background)] overflow-hidden">
           <WeatherMap />
 
           {/* Gradient fade behind city cards */}
@@ -137,7 +137,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
 
         {/* Content Section - overlapping map */}
         <div
-          className="relative z-30 -mt-4 rounded-t-[2rem] lg:rounded-t-[3rem] p-4 sm:p-6 lg:p-12"
+          className="relative z-[40] -mt-4 p-4 sm:p-6 lg:p-12"
           style={{
             background: "var(--content-bg)",
             boxShadow: "0 -20px 50px rgba(0, 0, 0, 0.1)",
