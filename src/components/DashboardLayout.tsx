@@ -38,7 +38,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen overflow-x-hidden">
       <main className="max-w-[1400px] mx-auto p-4 sm:p-6">
         {/* Top row: logo + toggle (always same line) */}
-        <div className="flex items-center justify-between mb-3 sm:mb-0">
+        <div className="flex items-center justify-between mb-4 sm:mb-6">
           <div className="flex items-center gap-3">
             <CloudSun className="w-7 h-7 text-[var(--accent-blue)] flex-shrink-0" />
             <h1 className="text-xl font-semibold tracking-tight whitespace-nowrap">WeatherPulse</h1>
@@ -57,10 +57,8 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
         </div>
 
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6">
-          <div>
-            <CityCardsRow />
-          </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 items-start gap-4 sm:gap-6 mb-4 sm:mb-6">
+          <CityCardsRow />
           <div className="h-[180px] sm:h-[220px]">
             <CityImageCard />
           </div>
