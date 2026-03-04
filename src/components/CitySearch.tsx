@@ -53,7 +53,7 @@ export function CitySearch() {
       </div>
 
       {isOpen && results && results.length > 0 && (
-        <div className="absolute top-full mt-2 w-full glass rounded-2xl p-2 z-50 max-h-[240px] overflow-y-auto">
+        <div className="absolute top-full mt-2 w-full glass rounded-2xl p-2 z-[200] max-h-[240px] overflow-y-auto">
           {results.map((city, i) => (
             <button
               key={`${city.lat}-${city.lon}-${i}`}

@@ -65,14 +65,15 @@ interface LeafletMapProps {
   onMarkerClick?: (marker: CityMarker) => void;
 }
 
-/** Swaps the tile layer when the theme changes. */
+/** Swaps the tile layer and container background when the theme changes. */
 function ThemeTileLayer() {
   const { theme } = useTheme();
   const map = useMap();
   const url = theme === "dark" ? TILES.dark : TILES.light;
 
   useEffect(() => {
-    // Force Leaflet to redraw tiles when theme changes
+    const container = map.getContainer();
+    container.style.background = theme === "dark" ? "#020617" : "#f8fafc";
     map.invalidateSize();
   }, [theme, map]);
 
@@ -89,7 +90,7 @@ export default function LeafletMap({ center, selectToken, markers, onMarkerClick
       zoom={4}
       minZoom={4}
       maxZoom={12}
-      style={{ height: "100%", width: "100%" }}
+      style={{ height: "100%", width: "100%", background: isDark ? "#020617" : "#f8fafc" }}
       zoomControl={false}
     >
       <MapUpdater center={center} selectToken={selectToken} />

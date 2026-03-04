@@ -21,16 +21,16 @@ export function AQIGauge({ aqi }: AQIGaugeProps) {
   return (
     <div className="flex flex-col items-center">
       <div className="relative w-40 h-40 lg:w-48 lg:h-48 flex items-center justify-center">
-        <svg className="w-full h-full transform -rotate-90">
+        <svg viewBox="0 0 200 200" className="w-full h-full transform -rotate-90">
           <circle
-            cx="50%" cy="50%" r="80"
+            cx="100" cy="100" r="80"
             fill="transparent"
             stroke="var(--card-border)"
             strokeWidth="12"
             className="opacity-50"
           />
           <circle
-            cx="50%" cy="50%" r="80"
+            cx="100" cy="100" r="80"
             fill="transparent"
             stroke={level.color}
             strokeWidth="12"

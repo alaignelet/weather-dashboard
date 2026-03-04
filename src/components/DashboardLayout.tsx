@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
+import { motion } from "framer-motion";
 import { Sun, Moon, Plus } from "lucide-react";
 import { CitySearch } from "./CitySearch";
 import { CityCardsRow } from "./CityCardsRow";
@@ -14,6 +15,20 @@ import { HourlyChart } from "./HourlyChart";
 import { WindCompass } from "./WindCompass";
 import { TemperatureRanking } from "./TemperatureRanking";
 import { useDashboard } from "@/context/DashboardContext";
+
+function ScrollReveal({ children, className, delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
+  return (
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.5, delay, ease: [0.25, 0.1, 0.25, 1] }}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 function ThemeToggle() {
   const { theme, setTheme } = useTheme();
@@ -72,7 +87,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen overflow-x-hidden">
       {/* Fixed Glass Navbar */}
-      <header className="fixed top-0 left-0 right-0 z-[100] h-20 flex items-center px-6 lg:px-8 bg-[var(--nav-bg)] backdrop-blur-xl border-b border-[var(--card-border)]">
+      <header className="fixed top-0 left-0 right-0 z-[1100] h-20 flex items-center px-6 lg:px-8 bg-[var(--nav-bg)] backdrop-blur-xl border-b border-[var(--card-border)]">
         <div className="flex items-center gap-3 mr-8 lg:mr-12 cursor-pointer group">
           <div
             className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform"
@@ -101,7 +116,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
       </header>
 
       {/* Mobile search */}
-      <div className="md:hidden fixed top-20 left-0 right-0 z-[90] px-4 py-3 bg-[var(--nav-bg)] backdrop-blur-xl border-b border-[var(--card-border)]">
+      <div className="md:hidden fixed top-20 left-0 right-0 z-[1100] px-4 py-3 bg-[var(--nav-bg)] backdrop-blur-xl border-b border-[var(--card-border)]">
         <CitySearch />
       </div>
 
@@ -134,45 +149,36 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
             {/* Main Grid */}
             <div className="grid grid-cols-12 gap-6 lg:gap-8">
               {/* Weekly Forecast - 8 cols */}
-              <div className="col-span-12 lg:col-span-8">
+              <ScrollReveal className="col-span-12 lg:col-span-8">
                 <WeeklyForecast />
-              </div>
+              </ScrollReveal>
 
               {/* Air Quality - 4 cols */}
-              <div className="col-span-12 lg:col-span-4">
+              <ScrollReveal className="col-span-12 lg:col-span-4" delay={0.1}>
                 <AirQualityPanel />
-              </div>
+              </ScrollReveal>
 
               {/* Hourly Chart - 6 cols */}
-              <div className="col-span-12 lg:col-span-6">
+              <ScrollReveal className="col-span-12 lg:col-span-6">
                 <HourlyChart />
-              </div>
+              </ScrollReveal>
 
               {/* Wind Compass - 6 cols */}
-              <div className="col-span-12 lg:col-span-6">
+              <ScrollReveal className="col-span-12 lg:col-span-6" delay={0.1}>
                 <WindCompass />
-              </div>
+              </ScrollReveal>
 
               {/* 5-Day Forecast Chart - 12 cols */}
-              <div className="col-span-12">
+              <ScrollReveal className="col-span-12">
                 <ForecastChart />
-              </div>
+              </ScrollReveal>
 
               {/* Temperature Ranking - 12 cols */}
-              <div className="col-span-12">
+              <ScrollReveal className="col-span-12">
                 <TemperatureRanking />
-              </div>
+              </ScrollReveal>
             </div>
 
-            {/* Footer */}
-            <footer className="mt-12 lg:mt-20 mb-8 lg:mb-12 flex flex-col md:flex-row justify-between items-center gap-6 py-8 border-t border-[var(--card-border)]">
-              <p className="text-[var(--text-muted)] text-sm font-medium">
-                Data refreshed automatically every 5 minutes
-              </p>
-              <div className="flex gap-6 lg:gap-8 text-sm font-bold text-[var(--text-muted)]">
-                <span className="hover:text-[var(--primary)] transition-colors cursor-pointer">API: Open-Meteo</span>
-              </div>
-            </footer>
           </div>
         </div>
       </main>
