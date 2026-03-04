@@ -74,7 +74,7 @@ const CityRow = memo(function CityRow({
       <span className="w-6 text-center text-xs font-bold text-[var(--text-muted)]">{rank}</span>
       <WeatherIcon main={weather.main} description={weather.description} size={22} />
       <div className="flex-1 min-w-0">
-        <span className="text-sm font-medium truncate block">{city.name}</span>
+        <span className="text-base font-medium truncate block">{city.name}</span>
         <span className="text-xs text-[var(--text-muted)]">{city.country}</span>
       </div>
       <span
@@ -141,10 +141,10 @@ export function TemperatureRanking() {
           <button
             key={z.key}
             onClick={() => setZone(z.key)}
-            className={`px-4 py-2 text-xs font-bold rounded-2xl transition-all duration-200 border ${
+            className={`px-4 py-2 text-xs font-bold rounded-2xl transition-all duration-200 border cursor-pointer ${
               zone === z.key
-                ? "bg-[var(--primary)]/20 text-[var(--primary)] border-[var(--primary)]/50"
-                : "bg-[var(--hover-bg)] text-[var(--text-secondary)] border-[var(--card-border)] hover-row"
+                ? "bg-[var(--primary)]/20 text-[var(--primary)] border-[var(--primary)]/50 scale-105"
+                : "bg-[var(--hover-bg)] text-[var(--text-secondary)] border-[var(--card-border)] hover:scale-105 hover:border-[var(--primary)]/30 hover:text-[var(--primary)] hover:shadow-md"
             }`}
           >
             {z.label}

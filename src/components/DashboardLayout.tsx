@@ -76,7 +76,7 @@ function FABButton() {
       </button>
       {showSearch && (
         <div className="fixed bottom-28 right-10 z-[100] w-72">
-          <CitySearch />
+          <CitySearch dropUp />
         </div>
       )}
     </>

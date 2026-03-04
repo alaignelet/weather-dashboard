@@ -20,12 +20,23 @@ function MapUpdater({ center, selectToken }: { center: [number, number]; selectT
   return null;
 }
 
-function createWeatherIcon(main: string, temp: number, isDark: boolean) {
+function createWeatherIcon(main: string, temp: number, isDark: boolean, isSelected: boolean) {
   const { svg, color } = getWeatherIconSvg(main);
-  const bg = isDark ? "rgba(15, 23, 42, 0.85)" : "rgba(255, 255, 255, 0.9)";
-  const border = isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.12)";
-  const shadow = isDark ? "rgba(0,0,0,0.3)" : "rgba(0,0,0,0.1)";
-  const textColor = isDark ? "#e2e8f0" : "#1e293b";
+  const bg = isSelected
+    ? "rgba(59, 130, 246, 0.95)"
+    : isDark ? "rgba(15, 23, 42, 0.85)" : "rgba(255, 255, 255, 0.9)";
+  const border = isSelected
+    ? "rgba(59, 130, 246, 1)"
+    : isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.12)";
+  const shadow = isSelected
+    ? "rgba(59, 130, 246, 0.5)"
+    : isDark ? "rgba(0,0,0,0.3)" : "rgba(0,0,0,0.1)";
+  const textColor = isSelected ? "#ffffff" : isDark ? "#e2e8f0" : "#1e293b";
+  const tempColor = isSelected ? "#ffffff" : color;
+  const scale = isSelected ? "scale(1.25)" : "scale(1)";
+  const boxShadow = isSelected
+    ? `0 4px 20px ${shadow}, 0 0 0 3px rgba(59, 130, 246, 0.3)`
+    : `0 2px 8px ${shadow}`;
 
   return L.divIcon({
     className: "",
@@ -35,14 +46,16 @@ function createWeatherIcon(main: string, temp: number, isDark: boolean) {
       backdrop-filter: blur(8px);
       border: 1px solid ${border};
       border-radius: 8px;
-      padding: 4px 8px;
+      padding: ${isSelected ? "6px 10px" : "4px 8px"};
       color: ${textColor};
-      font-size: 12px;
-      font-weight: 600;
+      font-size: ${isSelected ? "14px" : "12px"};
+      font-weight: ${isSelected ? "700" : "600"};
       white-space: nowrap;
-      box-shadow: 0 2px 8px ${shadow};
-      transform: translate(-50%, -50%);
-    ">${svg}<span style="color:${color}">${Math.round(temp)}°</span></div>`,
+      box-shadow: ${boxShadow};
+      transform: translate(-50%, -50%) ${scale};
+      transition: all 0.3s ease;
+      z-index: ${isSelected ? "1000" : "1"};
+    ">${svg}<span style="color:${tempColor}">${Math.round(temp)}°</span></div>`,
     iconSize: [0, 0],
     iconAnchor: [0, 0],
   });
@@ -62,6 +75,7 @@ interface LeafletMapProps {
   center: [number, number];
   selectToken: number;
   markers: CityMarker[];
+  selectedCoords?: { lat: number; lon: number } | null;
   onMarkerClick?: (marker: CityMarker) => void;
 }
 
@@ -80,7 +94,7 @@ function ThemeTileLayer() {
   return <TileLayer key={theme} url={url} attribution="" keepBuffer={6} updateWhenZooming={false} />;
 }
 
-export default function LeafletMap({ center, selectToken, markers, onMarkerClick }: LeafletMapProps) {
+export default function LeafletMap({ center, selectToken, markers, selectedCoords, onMarkerClick }: LeafletMapProps) {
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
@@ -102,23 +116,10 @@ export default function LeafletMap({ center, selectToken, markers, onMarkerClick
           <Marker
             key={`${m.lat}-${m.lon}-${isDark ? "d" : "l"}`}
             position={[m.lat, m.lon]}
-            icon={createWeatherIcon(m.main, m.temp, isDark)}
+            icon={createWeatherIcon(m.main, m.temp, isDark, !!(selectedCoords && m.lat === selectedCoords.lat && m.lon === selectedCoords.lon))}
+            zIndexOffset={selectedCoords && m.lat === selectedCoords.lat && m.lon === selectedCoords.lon ? 1000 : 0}
             eventHandlers={onMarkerClick ? { click: () => onMarkerClick(m) } : undefined}
-          >
-            <Popup>
-              <div style={{ padding: "4px 0", minWidth: 120 }}>
-                <div style={{ fontSize: 14, fontWeight: 700, color: "#1e293b", marginBottom: 2 }}>
-                  {m.name}
-                </div>
-                <div style={{ fontSize: 22, fontWeight: 700, color: "#1e293b", marginBottom: 2 }}>
-                  {Math.round(m.temp)}°C
-                </div>
-                <div style={{ fontSize: 12, color: "#64748b", textTransform: "capitalize" }}>
-                  {m.description}
-                </div>
-              </div>
-            </Popup>
-          </Marker>
+          />
         ) : null
       )}
     </MapContainer>

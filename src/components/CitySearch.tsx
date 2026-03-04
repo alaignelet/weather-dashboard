@@ -6,7 +6,7 @@ import { useCitySearch } from "@/hooks/useCities";
 import { useDashboard } from "@/context/DashboardContext";
 import type { City } from "@/lib/types";
 
-export function CitySearch() {
+export function CitySearch({ dropUp = false }: { dropUp?: boolean }) {
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const { data: results } = useCitySearch(query);
@@ -53,7 +53,7 @@ export function CitySearch() {
       </div>
 
       {isOpen && results && results.length > 0 && (
-        <div className="absolute top-full mt-2 w-full glass rounded-2xl p-2 z-[200] max-h-[240px] overflow-y-auto">
+        <div className={`absolute w-full glass rounded-2xl p-2 z-[200] max-h-[240px] overflow-y-auto ${dropUp ? "bottom-full mb-2" : "top-full mt-2"}`}>
           {results.map((city, i) => (
             <button
               key={`${city.lat}-${city.lon}-${i}`}

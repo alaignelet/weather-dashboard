@@ -89,6 +89,7 @@ export function WeatherMap() {
         center={center}
         selectToken={selectToken}
         markers={Array.from(markers.values())}
+        selectedCoords={selectedCity ? { lat: selectedCity.lat, lon: selectedCity.lon } : null}
         onMarkerClick={handleMarkerClick}
       />
     </div>
