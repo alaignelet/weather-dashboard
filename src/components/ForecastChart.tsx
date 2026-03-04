@@ -87,7 +87,7 @@ export function ForecastChart() {
     : [];
 
   return (
-    <div className="glass-card p-6">
+    <div className="glass-card p-6 h-full flex flex-col">
       <div className="flex items-center gap-2 mb-4">
         <CalendarDays className="w-5 h-5 text-blue-400" />
         <h2 className="font-semibold">5-Day Forecast</h2>
@@ -95,11 +95,11 @@ export function ForecastChart() {
       </div>
 
       {isLoading ? (
-        <div className="h-[220px] flex items-center justify-center">
+        <div className="flex-1 flex items-center justify-center min-h-[220px]">
           <div className="animate-spin w-6 h-6 border-2 border-blue-400 border-t-transparent rounded-full" />
         </div>
       ) : (
-        <ResponsiveContainer width="100%" height={220}>
+        <ResponsiveContainer width="100%" className="flex-1" height="100%">
           <ComposedChart data={dailyData}>
             <XAxis
               dataKey="date"

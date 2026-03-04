@@ -52,6 +52,7 @@ export interface CityMarker {
   name: string;
   lat: number;
   lon: number;
+  country?: string;
   temp?: number;
   main?: string;
   description?: string;
@@ -61,6 +62,7 @@ interface LeafletMapProps {
   center: [number, number];
   selectToken: number;
   markers: CityMarker[];
+  onMarkerClick?: (marker: CityMarker) => void;
 }
 
 /** Swaps the tile layer when the theme changes. */
@@ -77,15 +79,15 @@ function ThemeTileLayer() {
   return <TileLayer key={theme} url={url} attribution="" />;
 }
 
-export default function LeafletMap({ center, selectToken, markers }: LeafletMapProps) {
+export default function LeafletMap({ center, selectToken, markers, onMarkerClick }: LeafletMapProps) {
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
   return (
     <MapContainer
       center={center}
-      zoom={3}
-      minZoom={3}
+      zoom={4}
+      minZoom={4}
       maxZoom={12}
       style={{ height: "100%", width: "100%" }}
       zoomControl={false}
@@ -98,6 +100,7 @@ export default function LeafletMap({ center, selectToken, markers }: LeafletMapP
             key={`${m.lat}-${m.lon}-${isDark ? "d" : "l"}`}
             position={[m.lat, m.lon]}
             icon={createWeatherIcon(m.main, m.temp, isDark)}
+            eventHandlers={onMarkerClick ? { click: () => onMarkerClick(m) } : undefined}
           >
             <Popup>
               <div style={{ padding: "4px 0", minWidth: 120 }}>

@@ -54,10 +54,18 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
   }, [cities, selectedCity]);
 
   const addCity = (city: City) => {
-    const exists = cities.some((c) => c.lat === city.lat && c.lon === city.lon);
-    if (!exists) {
-      setCities((prev) => [...prev, city]);
-    }
+    setCities((prev) => {
+      const idx = prev.findIndex((c) => c.lat === city.lat && c.lon === city.lon);
+      if (idx === -1) return [...prev, city];
+      // Update existing entry if new data is more complete
+      const existing = prev[idx];
+      if ((!existing.country && city.country) || (!existing.state && city.state)) {
+        const updated = [...prev];
+        updated[idx] = { ...existing, ...city };
+        return updated;
+      }
+      return prev;
+    });
     setSelectedCity(city);
     setSelectToken((t) => t + 1);
   };

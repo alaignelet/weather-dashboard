@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Map as MapIcon } from "lucide-react";
 import { useDashboard } from "@/context/DashboardContext";
 import { useWeather } from "@/hooks/useWeather";
@@ -27,6 +27,7 @@ function CityMarkerData({ city, onData }: { city: City; onData: (marker: CityMar
       name: city.name,
       lat: city.lat,
       lon: city.lon,
+      country: city.country,
       temp: weather?.temp,
       main: weather?.main,
       description: weather?.description,
@@ -51,7 +52,7 @@ function mergeAllCities(userCities: City[]): City[] {
 }
 
 export function WeatherMap() {
-  const { selectedCity, selectToken, cities } = useDashboard();
+  const { selectedCity, selectToken, cities, addCity } = useDashboard();
   const [markers, setMarkers] = useState<Map<string, CityMarker>>(new Map());
 
   const allCities = mergeAllCities(cities);
@@ -59,6 +60,10 @@ export function WeatherMap() {
   const center: [number, number] = selectedCity
     ? [selectedCity.lat, selectedCity.lon]
     : [20, 0]; // world view
+
+  const handleMarkerClick = useCallback((marker: CityMarker) => {
+    addCity({ name: marker.name, lat: marker.lat, lon: marker.lon, country: marker.country ?? "" });
+  }, [addCity]);
 
   const handleMarkerData = (marker: CityMarker) => {
     setMarkers((prev) => {
@@ -90,7 +95,7 @@ export function WeatherMap() {
       ))}
 
       <div className="rounded-lg overflow-hidden h-[300px] flex-1 min-h-[300px]">
-        <LeafletMap center={center} selectToken={selectToken} markers={Array.from(markers.values())} />
+        <LeafletMap center={center} selectToken={selectToken} markers={Array.from(markers.values())} onMarkerClick={handleMarkerClick} />
       </div>
     </div>
   );
