@@ -15,7 +15,13 @@ const TILES = {
 function MapUpdater({ center, selectToken }: { center: [number, number]; selectToken: number }) {
   const map = useMap();
   useEffect(() => {
-    map.flyTo(center, Math.max(map.getZoom(), 5), { duration: 0.8 });
+    const zoom = Math.max(map.getZoom(), 5);
+    // Convert center to pixel, shift up by 15% of map height to compensate for city cards, convert back
+    const targetPoint = map.project(center, zoom);
+    const mapHeight = map.getSize().y;
+    targetPoint.y += mapHeight * 0.15;
+    const offsetCenter = map.unproject(targetPoint, zoom);
+    map.flyTo(offsetCenter, zoom, { duration: 0.8 });
   }, [center, selectToken, map]);
   return null;
 }
