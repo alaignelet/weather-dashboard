@@ -30,7 +30,7 @@ export function CityHeader() {
     : "--";
 
   return (
-    <div className="relative overflow-hidden rounded-3xl mb-12 h-[300px]">
+    <div className="relative overflow-hidden rounded-3xl mb-6 sm:mb-8 lg:mb-12 h-[200px] sm:h-[250px] lg:h-[300px]">
       {/* Background image */}
       {imageUrl ? (
         <img
@@ -53,13 +53,13 @@ export function CityHeader() {
       />
 
       {/* Content */}
-      <div className="relative h-full flex flex-col justify-end p-6 lg:p-10">
+      <div className="relative h-full flex flex-col justify-end p-4 sm:p-6 lg:p-10">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
           <div>
             <div className="flex items-center gap-3 mb-2">
               <MapPin className="w-7 h-7" style={{ color: isDark ? "rgba(255,255,255,0.8)" : "rgba(0,0,0,0.7)" }} />
               <h2
-                className="text-3xl lg:text-4xl font-extrabold tracking-tight"
+                className="text-xl sm:text-2xl lg:text-4xl font-extrabold tracking-tight"
                 style={{ color: isDark ? "#fff" : "#0f172a", textShadow: isDark ? "none" : "0 1px 8px rgba(255,255,255,0.6)" }}
               >
                 {selectedCity.name}, {selectedCity.country}
@@ -96,7 +96,7 @@ export function CityHeader() {
               }}
             >
               <div className="text-right">
-                <p className="text-5xl lg:text-6xl font-black tracking-tighter" style={{ color: isDark ? "#fff" : "#0f172a" }}>
+                <p className="text-3xl sm:text-4xl lg:text-6xl font-black tracking-tighter" style={{ color: isDark ? "#fff" : "#0f172a" }}>
                   {Math.round(weather.temp)}°
                   <span className="text-xl lg:text-2xl font-light uppercase" style={{ color: isDark ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.4)" }}>c</span>
                 </p>

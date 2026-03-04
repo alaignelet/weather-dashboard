@@ -152,7 +152,7 @@ export function TemperatureRanking() {
         ))}
       </div>
 
-      <div className="flex flex-col gap-1 overflow-y-auto max-h-[400px] scrollbar-hide">
+      <div className="flex flex-col gap-1 overflow-y-auto max-h-[300px] sm:max-h-[400px] scrollbar-hide">
         {sorted.map((city, i) => (
           <CityRow
             key={`${city.lat}-${city.lon}`}

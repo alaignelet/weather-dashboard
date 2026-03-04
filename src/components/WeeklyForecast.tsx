@@ -55,11 +55,11 @@ export function WeeklyForecast() {
     : [];
 
   return (
-    <div className="glass-card p-6 lg:p-8">
-      <div className="flex items-center justify-between mb-6 lg:mb-8 px-2">
+    <div className="glass-card p-4 sm:p-6 lg:p-8">
+      <div className="flex items-center justify-between mb-4 sm:mb-6 lg:mb-8 px-2">
         <div className="flex items-center gap-3">
           <CalendarDays className="w-5 h-5 text-[var(--primary)]" />
-          <h3 className="text-lg lg:text-xl font-bold">Weekly Forecast</h3>
+          <h3 className="text-base sm:text-lg lg:text-xl font-bold">Weekly Forecast</h3>
         </div>
       </div>
       {isLoading ? (
@@ -67,31 +67,31 @@ export function WeeklyForecast() {
           <div className="animate-spin w-6 h-6 border-2 border-[var(--primary)] border-t-transparent rounded-full" />
         </div>
       ) : (
-        <div className="grid gap-3 lg:gap-4" style={{ gridTemplateColumns: `repeat(${days.length}, 1fr)` }}>
+        <div className="flex gap-2 sm:gap-3 lg:gap-4 overflow-x-auto scrollbar-hide sm:grid sm:overflow-visible" style={{ gridTemplateColumns: `repeat(${days.length}, 1fr)` }}>
           {days.map((d, i) => (
             <div
               key={d.day}
-              className={`flex flex-col items-center p-4 lg:p-6 rounded-[2rem] transition-all ${
+              className={`flex flex-col items-center p-3 sm:p-4 lg:p-6 rounded-[1.5rem] sm:rounded-[2rem] transition-all min-w-[72px] sm:min-w-0 ${
                 i === 0
                   ? "bg-gradient-to-b from-[var(--primary)] to-[var(--accent)] text-white shadow-xl shadow-[var(--primary)]/20 scale-105"
                   : "hover:bg-[var(--hover-bg)] border border-transparent hover:border-[var(--card-border)]"
               }`}
             >
               <span
-                className={`text-xs font-bold mb-4 uppercase tracking-wider ${
+                className={`text-[10px] sm:text-xs font-bold mb-2 sm:mb-4 uppercase tracking-wider ${
                   i === 0 ? "opacity-80" : "text-[var(--text-muted)]"
                 }`}
               >
                 {d.day}
               </span>
-              <div className="mb-4 lg:mb-5">
+              <div className="mb-2 sm:mb-4 lg:mb-5">
                 <WeatherIcon main={d.main} description={d.description} size={52} />
               </div>
-              <span className="text-lg lg:text-xl font-black">
+              <span className="text-base sm:text-lg lg:text-xl font-black">
                 {Math.round(d.temp_max)}°
               </span>
               <span
-                className={`text-xs mt-1 ${
+                className={`text-[10px] sm:text-xs mt-1 ${
                   i === 0 ? "opacity-70" : "text-[var(--text-muted)]"
                 }`}
               >

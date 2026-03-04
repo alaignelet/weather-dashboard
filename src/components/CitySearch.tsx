@@ -58,7 +58,7 @@ export function CitySearch({ dropUp = false }: { dropUp?: boolean }) {
             <button
               key={`${city.lat}-${city.lon}-${i}`}
               onClick={() => handleSelect(city)}
-              className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-[var(--hover-bg)] transition-colors text-sm"
+              className="w-full flex items-center justify-between px-3 py-2.5 sm:py-2 rounded-lg hover:bg-[var(--hover-bg)] transition-colors text-sm"
             >
               <span>
                 {city.name}

@@ -62,7 +62,7 @@ function FABButton() {
     <>
       <button
         onClick={() => setShowSearch(!showSearch)}
-        className="fixed bottom-10 right-10 w-16 h-16 text-white rounded-[2rem] shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-[100] group"
+        className="fixed bottom-6 right-6 sm:bottom-10 sm:right-10 w-14 h-14 sm:w-16 sm:h-16 text-white rounded-[2rem] shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-[100] group"
         style={{
           background: "linear-gradient(135deg, var(--primary), var(--accent))",
           boxShadow: "0 25px 50px -12px rgba(59, 130, 246, 0.4)",
@@ -75,7 +75,7 @@ function FABButton() {
         </span>
       </button>
       {showSearch && (
-        <div className="fixed bottom-28 right-10 z-[100] w-72">
+        <div className="fixed bottom-24 right-6 sm:bottom-28 sm:right-10 z-[100] w-72">
           <CitySearch dropUp />
         </div>
       )}
@@ -87,7 +87,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen overflow-x-hidden">
       {/* Fixed Glass Navbar */}
-      <header className="fixed top-0 left-0 right-0 z-[1100] h-20 flex items-center px-6 lg:px-8 bg-[var(--nav-bg)] backdrop-blur-xl border-b border-[var(--card-border)]">
+      <header className="fixed top-0 left-0 right-0 z-[1100] h-20 flex items-center px-4 sm:px-6 lg:px-8 bg-[var(--nav-bg)] backdrop-blur-xl border-b border-[var(--card-border)]">
         <div className="flex items-center gap-3 mr-8 lg:mr-12 cursor-pointer group">
           <div
             className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform"
@@ -100,7 +100,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
               <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" />
             </svg>
           </div>
-          <h1 className="text-xl font-bold tracking-tight bg-gradient-to-r from-[var(--text-primary)] to-[var(--text-muted)] bg-clip-text text-transparent">
+          <h1 className="text-lg sm:text-xl font-bold tracking-tight bg-gradient-to-r from-[var(--text-primary)] to-[var(--text-muted)] bg-clip-text text-transparent">
             WeatherDash
           </h1>
         </div>
@@ -137,7 +137,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
 
         {/* Content Section - overlapping map */}
         <div
-          className="relative z-30 -mt-4 rounded-t-[2rem] lg:rounded-t-[3rem] p-6 lg:p-12"
+          className="relative z-30 -mt-4 rounded-t-[2rem] lg:rounded-t-[3rem] p-4 sm:p-6 lg:p-12"
           style={{
             background: "var(--content-bg)",
             boxShadow: "0 -20px 50px rgba(0, 0, 0, 0.1)",

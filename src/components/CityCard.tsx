@@ -30,7 +30,7 @@ export function CityCard({ city }: CityCardProps) {
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") selectCity(city); }}
       style={{ backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" }}
-      className={`glass p-4 lg:p-6 min-w-[240px] sm:min-w-[280px] rounded-3xl text-left transition-all duration-300 cursor-pointer snap-center ${
+      className={`glass p-4 lg:p-6 min-w-[200px] sm:min-w-[240px] lg:min-w-[280px] rounded-3xl text-left transition-all duration-300 cursor-pointer snap-center ${
         isSelected
           ? "border-2 border-[var(--primary)]/50 scale-105 shadow-[var(--primary)]/10"
           : "opacity-80 hover:opacity-100 hover:border-[var(--primary)]/30"
@@ -52,7 +52,7 @@ export function CityCard({ city }: CityCardProps) {
             removeCity(city);
           }}
           aria-label={`Remove ${city.name}`}
-          className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+          className="p-2 -m-2 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
         >
           <X className="w-4 h-4" />
         </button>

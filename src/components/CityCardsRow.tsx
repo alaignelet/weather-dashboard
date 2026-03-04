@@ -14,7 +14,7 @@ export function CityCardsRow() {
     const key = `${selectedCity.lat}-${selectedCity.lon}`;
     const el = cardRefs.current.get(key);
     if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+      el.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
     }
   }, [selectedCity, selectToken]);
 
@@ -27,7 +27,7 @@ export function CityCardsRow() {
   }
 
   return (
-    <div ref={scrollRef} className="flex gap-4 lg:gap-6 overflow-x-auto scrollbar-hide pb-6 px-8 lg:px-12 snap-x">
+    <div ref={scrollRef} className="flex gap-3 sm:gap-4 lg:gap-6 overflow-x-auto scrollbar-hide pb-6 px-4 sm:px-6 lg:px-12 snap-x">
       {cities.map((city) => {
         const key = `${city.lat}-${city.lon}`;
         return (
