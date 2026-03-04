@@ -23,19 +23,16 @@ function MapUpdater({ center, selectToken }: { center: [number, number]; selectT
 function createWeatherIcon(main: string, temp: number, isDark: boolean, isSelected: boolean) {
   const { svg, color } = getWeatherIconSvg(main);
   const bg = isSelected
-    ? "rgba(59, 130, 246, 0.95)"
+    ? (isDark ? "rgba(15, 23, 42, 0.9)" : "rgba(255, 255, 255, 0.95)")
     : isDark ? "rgba(15, 23, 42, 0.85)" : "rgba(255, 255, 255, 0.9)";
-  const border = isSelected
-    ? "rgba(59, 130, 246, 1)"
-    : isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.12)";
-  const shadow = isSelected
-    ? "rgba(59, 130, 246, 0.5)"
-    : isDark ? "rgba(0,0,0,0.3)" : "rgba(0,0,0,0.1)";
-  const textColor = isSelected ? "#ffffff" : isDark ? "#e2e8f0" : "#1e293b";
-  const tempColor = isSelected ? "#ffffff" : color;
-  const scale = isSelected ? "scale(1.25)" : "scale(1)";
+  const border = isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.12)";
+  const shadow = isDark ? "rgba(0,0,0,0.3)" : "rgba(0,0,0,0.1)";
+  const textColor = isDark ? "#e2e8f0" : "#1e293b";
+  const tempColor = color;
+  const scale = isSelected ? "scale(1.3)" : "scale(1)";
+  const blur = isSelected ? "blur(16px)" : "blur(8px)";
   const boxShadow = isSelected
-    ? `0 4px 20px ${shadow}, 0 0 0 3px rgba(59, 130, 246, 0.3)`
+    ? `0 4px 20px ${shadow}`
     : `0 2px 8px ${shadow}`;
 
   return L.divIcon({
@@ -43,7 +40,7 @@ function createWeatherIcon(main: string, temp: number, isDark: boolean, isSelect
     html: `<div style="
       display: inline-flex; align-items: center; gap: 5px;
       background: ${bg};
-      backdrop-filter: blur(8px);
+      backdrop-filter: ${blur};
       border: 1px solid ${border};
       border-radius: 8px;
       padding: ${isSelected ? "6px 10px" : "4px 8px"};
