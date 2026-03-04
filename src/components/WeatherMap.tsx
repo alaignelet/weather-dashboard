@@ -13,7 +13,7 @@ const LeafletMap = dynamic(() => import("./LeafletMap"), {
   ssr: false,
   loading: () => (
     <div className="h-[300px] flex items-center justify-center">
-      <div className="animate-spin w-6 h-6 border-2 border-blue-400 border-t-transparent rounded-full" />
+      <div className="animate-spin w-6 h-6 border-2 border-[var(--accent-blue)] border-t-transparent rounded-full" />
     </div>
   ),
 });
@@ -77,11 +77,11 @@ export function WeatherMap() {
   };
 
   return (
-    <div className="glass-card p-6 overflow-hidden h-full flex flex-col">
+    <div className="glass-card p-4 sm:p-5 overflow-hidden h-full flex flex-col">
       <div className="flex items-center gap-2 mb-4">
-        <MapIcon className="w-5 h-5 text-blue-400" />
+        <MapIcon className="w-5 h-5 text-[var(--accent-blue)]" />
         <h2 className="font-semibold">Weather Map</h2>
-        <span className="text-xs text-slate-400 ml-auto">
+        <span className="text-xs text-[var(--text-muted)] ml-auto">
           {allCities.length} cities worldwide
         </span>
       </div>

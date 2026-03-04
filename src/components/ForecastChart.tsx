@@ -96,7 +96,7 @@ export function ForecastChart() {
 
       {isLoading ? (
         <div className="flex-1 flex items-center justify-center min-h-[220px]">
-          <div className="animate-spin w-6 h-6 border-2 border-blue-400 border-t-transparent rounded-full" />
+          <div className="animate-spin w-6 h-6 border-2 border-[var(--accent-blue)] border-t-transparent rounded-full" />
         </div>
       ) : (
         <ResponsiveContainer width="100%" className="flex-1" height="100%">

@@ -143,7 +143,7 @@ export function TemperatureRanking() {
             onClick={() => setZone(z.key)}
             className={`px-3 py-1 text-xs rounded-full transition-all duration-200 ${
               zone === z.key
-                ? "bg-blue-500/20 text-blue-400 border border-blue-400/50"
+                ? "bg-[var(--accent-blue)]/20 text-[var(--accent-blue)] border border-[var(--accent-blue)]/50"
                 : "bg-[var(--hover-bg)] text-[var(--text-secondary)] border border-transparent hover-row"
             }`}
           >
