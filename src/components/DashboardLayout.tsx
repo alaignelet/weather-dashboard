@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { motion } from "framer-motion";
-import { Sun, Moon, Plus } from "lucide-react";
+import { Sun, Moon } from "lucide-react";
 import { CitySearch } from "./CitySearch";
 import { CityCardsRow } from "./CityCardsRow";
 import { CityHeader } from "./CityHeader";
@@ -52,34 +52,6 @@ function ThemeToggle() {
         <Moon className="w-5 h-5 text-[var(--text-secondary)] group-hover:rotate-45 transition-transform" />
       )}
     </button>
-  );
-}
-
-function FABButton() {
-  const [showSearch, setShowSearch] = useState(false);
-
-  return (
-    <>
-      <button
-        onClick={() => setShowSearch(!showSearch)}
-        className="fixed bottom-6 right-6 sm:bottom-10 sm:right-10 w-14 h-14 sm:w-16 sm:h-16 text-white rounded-[2rem] shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-[100] group"
-        style={{
-          background: "linear-gradient(135deg, var(--primary), var(--accent))",
-          boxShadow: "0 25px 50px -12px rgba(59, 130, 246, 0.4)",
-        }}
-        aria-label="Track new city"
-      >
-        <Plus className="w-8 h-8" />
-        <span className="absolute right-full mr-6 bg-slate-900 text-white text-xs font-bold py-3 px-6 rounded-2xl opacity-0 group-hover:opacity-100 transition-all translate-x-4 group-hover:translate-x-0 whitespace-nowrap pointer-events-none shadow-xl">
-          Track New City
-        </span>
-      </button>
-      {showSearch && (
-        <div className="fixed bottom-24 right-6 sm:bottom-28 sm:right-10 z-[100] w-72">
-          <CitySearch dropUp />
-        </div>
-      )}
-    </>
   );
 }
 
@@ -183,7 +155,6 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
         </div>
       </main>
 
-      <FABButton />
     </div>
   );
 }
