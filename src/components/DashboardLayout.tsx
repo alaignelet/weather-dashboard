@@ -77,8 +77,8 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
           </h1>
         </div>
 
-        {/* Search - desktop */}
-        <div className="hidden md:block flex-1 max-w-xl">
+        {/* Search */}
+        <div className="flex-1 max-w-xl mr-4 lg:mr-6">
           <CitySearch />
         </div>
 
@@ -87,10 +87,6 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
         </div>
       </header>
 
-      {/* Mobile search */}
-      <div className="md:hidden fixed top-20 left-0 right-0 z-[45] px-4 py-3 bg-[var(--nav-bg)] backdrop-blur-xl border-b border-[var(--card-border)]">
-        <CitySearch />
-      </div>
 
       {/* Main content */}
       <main className="pt-20">
