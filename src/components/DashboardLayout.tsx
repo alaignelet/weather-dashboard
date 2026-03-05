@@ -137,7 +137,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
 
         {/* Content Section - overlapping map */}
         <div
-          className="relative z-[40] -mt-4 p-4 sm:p-6 lg:p-12"
+          className="relative z-[40] lg:-mt-4 p-4 sm:p-6 lg:p-12"
           style={{
             background: "var(--content-bg)",
             boxShadow: "0 -20px 50px rgba(0, 0, 0, 0.1)",

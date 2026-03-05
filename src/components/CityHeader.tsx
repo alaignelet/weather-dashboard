@@ -66,11 +66,11 @@ export function CityHeader() {
                 {selectedCity.name}, {selectedCity.country}
               </h2>
             </div>
-            <div className="flex flex-wrap items-center gap-4 lg:gap-6 font-medium" style={{ color: isDark ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.55)", textShadow: isDark ? "none" : "0 1px 6px rgba(255,255,255,0.5)" }}>
+            <div className="flex flex-wrap items-center gap-2 sm:gap-4 lg:gap-6 text-xs sm:text-sm font-medium" style={{ color: isDark ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.55)", textShadow: isDark ? "none" : "0 1px 6px rgba(255,255,255,0.5)" }}>
               <span className="flex items-center gap-1.5">
-                <Clock className="w-4 h-4" /> {localTime}
+                <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> {localTime}
               </span>
-              <span className="flex items-center gap-1.5">
+              <span className="hidden sm:flex items-center gap-1.5">
                 <Eye className="w-4 h-4" /> {visibilityKm}km Visibility
               </span>
               {weather && (
