@@ -17,6 +17,11 @@ const LeafletMap = dynamic(() => import("./LeafletMap"), {
   ),
 });
 
+// Register tile-caching service worker once
+if (typeof window !== "undefined" && "serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/tile-cache-sw.js").catch(() => {});
+}
+
 // Each city gets its own component so useWeather is called correctly per hook rules
 function CityMarkerData({ city, onData }: { city: City; onData: (marker: CityMarker) => void }) {
   const { data: weather } = useWeather(city.lat, city.lon);

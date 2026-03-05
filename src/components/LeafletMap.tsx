@@ -14,13 +14,30 @@ const TILES = {
 
 function MapUpdater({ center, selectToken }: { center: [number, number]; selectToken: number }) {
   const map = useMap();
+  const prevCenter = useRef(center);
+
   useEffect(() => {
     const zoom = Math.max(map.getZoom(), 4);
     const targetPoint = map.project(center, zoom);
     const mapHeight = map.getSize().y;
     targetPoint.y += mapHeight * 0.15;
     const offsetCenter = map.unproject(targetPoint, zoom);
-    map.flyTo(offsetCenter, zoom, { duration: 0.8 });
+
+    // Calculate distance to decide animation strategy
+    const [prevLat, prevLon] = prevCenter.current;
+    const dist = Math.abs(center[0] - prevLat) + Math.abs(center[1] - prevLon);
+    prevCenter.current = center;
+
+    if (dist > 40) {
+      // Very far — instant jump, no intermediate tile loading
+      map.setView(offsetCenter, zoom, { animate: false });
+    } else if (dist > 15) {
+      // Medium distance — short fast animation
+      map.flyTo(offsetCenter, zoom, { duration: 0.5, easeLinearity: 0.5 });
+    } else {
+      // Nearby — smooth fly
+      map.flyTo(offsetCenter, zoom, { duration: 0.8 });
+    }
   }, [center, selectToken, map]);
   return null;
 }
@@ -109,7 +126,7 @@ function ThemeTileLayer() {
     map.invalidateSize();
   }, [theme, map]);
 
-  return <TileLayer key={theme} url={url} attribution="" keepBuffer={6} updateWhenZooming={false} />;
+  return <TileLayer key={theme} url={url} attribution="" keepBuffer={8} updateWhenZooming={false} updateWhenIdle={true} />;
 }
 
 /** Individual marker — memoized to skip re-renders when props haven't changed */
