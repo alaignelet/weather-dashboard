@@ -51,6 +51,7 @@ body {
   color: var(--foreground);
   font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
   transition: background 0.5s ease, color 0.5s ease;
+  overscroll-behavior-y: none; /* prevent pull-to-refresh interfering with scroll */
 }
 
 /* Glass morphism card */

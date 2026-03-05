@@ -153,17 +153,27 @@ const MapMarker = memo(function MapMarker({
   );
 });
 
-/** Disable dragging on mobile to prevent map from stealing scroll gestures */
+/** Disable all map touch interactions on mobile to prevent scroll hijacking */
 function MobileInteractionGuard() {
   const map = useMap();
   useEffect(() => {
+    const container = map.getContainer();
     const check = () => {
       if (window.innerWidth < 768) {
         map.dragging.disable();
         map.touchZoom.disable();
+        map.doubleClickZoom.disable();
+        map.scrollWheelZoom.disable();
+        if ((map as any).tap) (map as any).tap.disable();
+        // Force inline style override — Leaflet sets touch-action via JS
+        container.style.touchAction = "pan-y";
       } else {
         map.dragging.enable();
         map.touchZoom.enable();
+        map.doubleClickZoom.enable();
+        map.scrollWheelZoom.enable();
+        if ((map as any).tap) (map as any).tap.enable();
+        container.style.touchAction = "";
       }
     };
     check();
