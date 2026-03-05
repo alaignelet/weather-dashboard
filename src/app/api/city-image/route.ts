@@ -67,7 +67,7 @@ export async function GET(request: NextRequest) {
   // Check server-side cache (24h TTL)
   const cacheKey = `city-image:${city.toLowerCase()}`;
   const cached = getCached(cacheKey);
-  if (cached !== undefined) return NextResponse.json(cached);
+  if (cached) return NextResponse.json(cached);
 
   // Try all Wikipedia direct lookups in parallel
   const queries = [city, `${city} city`, `${city} (city)`];
