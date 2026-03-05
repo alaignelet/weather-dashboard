@@ -48,14 +48,6 @@ export function ForecastChart() {
     selectedCity?.lon ?? 0
   );
 
-  if (!selectedCity) {
-    return (
-      <div className="glass-card p-6 flex items-center justify-center h-[300px] text-[var(--text-muted)]">
-        Select a city to view forecast
-      </div>
-    );
-  }
-
   const dailyData = useMemo(() => forecast
     ? Object.values(
         forecast.reduce(
@@ -86,6 +78,14 @@ export function ForecastChart() {
         )
       ).slice(0, 5)
     : [], [forecast]);
+
+  if (!selectedCity) {
+    return (
+      <div className="glass-card p-6 flex items-center justify-center h-[300px] text-[var(--text-muted)]">
+        Select a city to view forecast
+      </div>
+    );
+  }
 
   return (
     <div className="glass-card p-6 lg:p-8">

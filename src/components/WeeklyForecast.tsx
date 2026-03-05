@@ -21,14 +21,6 @@ export function WeeklyForecast() {
     selectedCity?.lon ?? 0
   );
 
-  if (!selectedCity) {
-    return (
-      <div className="glass-card p-8 flex items-center justify-center h-[280px] text-[var(--text-muted)]">
-        Select a city to view forecast
-      </div>
-    );
-  }
-
   const days: DayData[] = useMemo(() => forecast
     ? Object.values(
         forecast.reduce(
@@ -54,6 +46,14 @@ export function WeeklyForecast() {
         )
       ).slice(0, 7)
     : [], [forecast]);
+
+  if (!selectedCity) {
+    return (
+      <div className="glass-card p-8 flex items-center justify-center h-[280px] text-[var(--text-muted)]">
+        Select a city to view forecast
+      </div>
+    );
+  }
 
   return (
     <div className="glass-card p-4 sm:p-6 lg:p-8 overflow-visible">

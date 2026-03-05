@@ -45,14 +45,6 @@ export function HourlyChart() {
     selectedCity?.lon ?? 0
   );
 
-  if (!selectedCity) {
-    return (
-      <div className="glass-card p-6 flex items-center justify-center h-[300px] text-[var(--text-muted)]">
-        Select a city to view hourly data
-      </div>
-    );
-  }
-
   const hourlyData = useMemo(() => forecast
     ? forecast.slice(0, 8).map((entry) => ({
         time: new Date(entry.dt * 1000).toLocaleTimeString("en-US", {
@@ -62,6 +54,14 @@ export function HourlyChart() {
         temp: Math.round(entry.temp),
       }))
     : [], [forecast]);
+
+  if (!selectedCity) {
+    return (
+      <div className="glass-card p-6 flex items-center justify-center h-[300px] text-[var(--text-muted)]">
+        Select a city to view hourly data
+      </div>
+    );
+  }
 
   return (
     <div className="glass-card p-6 lg:p-8">
