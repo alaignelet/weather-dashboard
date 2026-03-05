@@ -153,6 +153,26 @@ const MapMarker = memo(function MapMarker({
   );
 });
 
+/** Disable dragging on mobile to prevent map from stealing scroll gestures */
+function MobileInteractionGuard() {
+  const map = useMap();
+  useEffect(() => {
+    const check = () => {
+      if (window.innerWidth < 768) {
+        map.dragging.disable();
+        map.touchZoom.disable();
+      } else {
+        map.dragging.enable();
+        map.touchZoom.enable();
+      }
+    };
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, [map]);
+  return null;
+}
+
 export default function LeafletMap({ center, selectToken, markers, selectedCoords, onMarkerClick }: LeafletMapProps) {
   const { theme } = useTheme();
   const isDark = theme === "dark";
@@ -169,6 +189,7 @@ export default function LeafletMap({ center, selectToken, markers, selectedCoord
       zoomControl={false}
       preferCanvas={true}
     >
+      <MobileInteractionGuard />
       <MapUpdater center={center} selectToken={selectToken} />
       <ThemeTileLayer />
       {markers.map((m) => (
