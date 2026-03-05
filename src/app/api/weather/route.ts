@@ -63,6 +63,7 @@ export async function GET(request: NextRequest) {
       visibility: 10000,
       clouds: current.cloud_cover,
       dt: Math.floor(new Date(current.time).getTime() / 1000),
+      timezone: data.timezone,
       sunrise: 0,
       sunset: 0,
     };

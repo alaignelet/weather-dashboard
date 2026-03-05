@@ -19,6 +19,7 @@ export interface CurrentWeather {
   visibility: number;
   clouds: number;
   dt: number;
+  timezone: string;
   sunrise: number;
   sunset: number;
 }

@@ -65,7 +65,7 @@ export function CitySearch({ dropUp = false, onSelect: onSelectCallback }: { dro
           onFocus={() => setIsOpen(true)}
           placeholder="Search global cities..."
           aria-label="Search city"
-          className="bg-transparent outline-none focus:ring-0 text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] w-full"
+          className="bg-transparent outline-none focus:ring-0 text-base sm:text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] w-full"
         />
         {query && (
           <button aria-label="Clear search" onClick={() => { setQuery(""); setIsOpen(false); }}>

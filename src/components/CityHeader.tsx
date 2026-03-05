@@ -23,6 +23,7 @@ export function CityHeader() {
     hour: "numeric",
     minute: "2-digit",
     hour12: true,
+    timeZone: weather?.timezone || undefined,
   });
 
   const visibilityKm = weather
