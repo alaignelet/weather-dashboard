@@ -123,7 +123,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
       {/* Main content */}
       <main className="pt-20">
         {/* Map Hero Section */}
-        <section className="relative z-[50] h-[60vh] sm:h-[50vh] lg:h-[65vh] w-full bg-[var(--background)] overflow-hidden touch-pan-y">
+        <section className="relative z-[50] h-[60vh] sm:h-[50vh] lg:h-[65vh] w-full bg-[var(--background)] overflow-hidden">
           <WeatherMap />
 
           {/* Gradient fade behind city cards */}

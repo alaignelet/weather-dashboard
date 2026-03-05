@@ -115,9 +115,11 @@ body {
   display: none !important;
 }
 
-/* Override Leaflet's touch-action: none on mobile so page scrolling works */
+/* On mobile, make map non-interactive so it can't hijack scroll.
+   Cities are selected via search bar and city cards instead. */
 @media (max-width: 767px) {
   .leaflet-container {
+    pointer-events: none !important;
     touch-action: pan-y !important;
   }
 }

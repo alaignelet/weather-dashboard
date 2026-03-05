@@ -153,41 +153,10 @@ const MapMarker = memo(function MapMarker({
   );
 });
 
-/** Disable all map touch interactions on mobile to prevent scroll hijacking */
-function MobileInteractionGuard() {
-  const map = useMap();
-  useEffect(() => {
-    const container = map.getContainer();
-    const check = () => {
-      if (window.innerWidth < 768) {
-        map.dragging.disable();
-        map.touchZoom.disable();
-        map.doubleClickZoom.disable();
-        map.scrollWheelZoom.disable();
-        if ((map as any).tap) (map as any).tap.disable();
-        // Force inline style override — Leaflet sets touch-action via JS
-        container.style.touchAction = "pan-y";
-      } else {
-        map.dragging.enable();
-        map.touchZoom.enable();
-        map.doubleClickZoom.enable();
-        map.scrollWheelZoom.enable();
-        if ((map as any).tap) (map as any).tap.enable();
-        container.style.touchAction = "";
-      }
-    };
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, [map]);
-  return null;
-}
 
 export default function LeafletMap({ center, selectToken, markers, selectedCoords, onMarkerClick }: LeafletMapProps) {
   const { theme } = useTheme();
   const isDark = theme === "dark";
-  // This component is ssr: false, so window is safe at render time
-  const isMobile = window.innerWidth < 768;
 
   return (
     <MapContainer
@@ -199,13 +168,8 @@ export default function LeafletMap({ center, selectToken, markers, selectedCoord
       maxZoom={8}
       style={{ height: "100%", width: "100%", background: isDark ? "#020617" : "#f8fafc" }}
       zoomControl={false}
-      dragging={!isMobile}
-      touchZoom={!isMobile}
-      doubleClickZoom={!isMobile}
-      scrollWheelZoom={!isMobile}
       preferCanvas={true}
     >
-      <MobileInteractionGuard />
       <MapUpdater center={center} selectToken={selectToken} />
       <ThemeTileLayer />
       {markers.map((m) => (
