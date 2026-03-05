@@ -9,9 +9,16 @@ import type { City } from "@/lib/types";
 
 export function CitySearch({ dropUp = false, onSelect: onSelectCallback }: { dropUp?: boolean; onSelect?: () => void }) {
   const [query, setQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownPos, setDropdownPos] = useState<{ top: number; left: number; width: number } | null>(null);
-  const { data: results } = useCitySearch(query);
+  const { data: results } = useCitySearch(debouncedQuery);
+
+  // Debounce search query by 300ms
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedQuery(query), 300);
+    return () => clearTimeout(timer);
+  }, [query]);
   const { addCity } = useDashboard();
   const ref = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLDivElement>(null);

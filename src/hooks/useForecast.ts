@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import type { ForecastEntry } from "@/lib/types";
 
-export function useForecast(lat: number, lon: number) {
+export function useForecast(lat: number, lon: number, enabled = true) {
   return useQuery<ForecastEntry[]>({
     queryKey: ["forecast", lat, lon],
     queryFn: async () => {
@@ -11,5 +11,6 @@ export function useForecast(lat: number, lon: number) {
       if (!res.ok) throw new Error("Failed to fetch forecast");
       return res.json();
     },
+    enabled: enabled && lat !== 0 && lon !== 0,
   });
 }

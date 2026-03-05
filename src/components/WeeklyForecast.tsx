@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { CalendarDays } from "lucide-react";
 import { useForecast } from "@/hooks/useForecast";
 import { useDashboard } from "@/context/DashboardContext";
@@ -28,7 +29,7 @@ export function WeeklyForecast() {
     );
   }
 
-  const days: DayData[] = forecast
+  const days: DayData[] = useMemo(() => forecast
     ? Object.values(
         forecast.reduce(
           (acc, entry) => {
@@ -52,7 +53,7 @@ export function WeeklyForecast() {
           {} as Record<string, DayData>
         )
       ).slice(0, 7)
-    : [];
+    : [], [forecast]);
 
   return (
     <div className="glass-card p-4 sm:p-6 lg:p-8 overflow-visible">

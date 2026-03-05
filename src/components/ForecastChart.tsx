@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import {
   ResponsiveContainer,
   Line,
@@ -55,7 +56,7 @@ export function ForecastChart() {
     );
   }
 
-  const dailyData = forecast
+  const dailyData = useMemo(() => forecast
     ? Object.values(
         forecast.reduce(
           (acc, entry) => {
@@ -84,7 +85,7 @@ export function ForecastChart() {
           >
         )
       ).slice(0, 5)
-    : [];
+    : [], [forecast]);
 
   return (
     <div className="glass-card p-6 lg:p-8">

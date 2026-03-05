@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import {
   ResponsiveContainer,
   BarChart,
@@ -52,7 +53,7 @@ export function HourlyChart() {
     );
   }
 
-  const hourlyData = forecast
+  const hourlyData = useMemo(() => forecast
     ? forecast.slice(0, 8).map((entry) => ({
         time: new Date(entry.dt * 1000).toLocaleTimeString("en-US", {
           hour: "numeric",
@@ -60,7 +61,7 @@ export function HourlyChart() {
         }),
         temp: Math.round(entry.temp),
       }))
-    : [];
+    : [], [forecast]);
 
   return (
     <div className="glass-card p-6 lg:p-8">

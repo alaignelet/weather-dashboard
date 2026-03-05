@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, useCallback, useMemo, type ReactNode } from "react";
 import type { City } from "@/lib/types";
 
 interface DashboardState {
@@ -90,13 +90,12 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     if (hydrated && cities.length > 0 && !selectedCity) {
       setSelectedCity(cities[0]);
     }
-  }, [cities, selectedCity]);
+  }, [cities, selectedCity, hydrated]);
 
-  const addCity = (city: City) => {
+  const addCity = useCallback((city: City) => {
     setCities((prev) => {
       const idx = prev.findIndex((c) => c.lat === city.lat && c.lon === city.lon);
       if (idx === -1) return [...prev, city];
-      // Update existing entry if new data is more complete
       const existing = prev[idx];
       if ((!existing.country && city.country) || (!existing.state && city.state)) {
         const updated = [...prev];
@@ -107,22 +106,33 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     });
     setSelectedCity(city);
     setSelectToken((t) => t + 1);
-  };
+  }, []);
 
-  const removeCity = (city: City) => {
-    setCities((prev) => prev.filter((c) => !(c.lat === city.lat && c.lon === city.lon)));
-    if (selectedCity?.lat === city.lat && selectedCity?.lon === city.lon) {
-      setSelectedCity(cities.length > 1 ? cities[0] : null);
-    }
-  };
+  const removeCity = useCallback((city: City) => {
+    setCities((prev) => {
+      const next = prev.filter((c) => !(c.lat === city.lat && c.lon === city.lon));
+      // If removed city was selected, select the first remaining city
+      setSelectedCity((sel) => {
+        if (sel?.lat === city.lat && sel?.lon === city.lon) {
+          return next.length > 0 ? next[0] : null;
+        }
+        return sel;
+      });
+      return next;
+    });
+  }, []);
 
-  const selectCity = (city: City) => {
+  const selectCity = useCallback((city: City) => {
     setSelectedCity(city);
     setSelectToken((t) => t + 1);
-  };
+  }, []);
+
+  const value = useMemo(() => ({
+    cities, selectedCity, selectToken, addCity, removeCity, selectCity,
+  }), [cities, selectedCity, selectToken, addCity, removeCity, selectCity]);
 
   return (
-    <DashboardContext.Provider value={{ cities, selectedCity, selectToken, addCity, removeCity, selectCity }}>
+    <DashboardContext.Provider value={value}>
       {children}
     </DashboardContext.Provider>
   );

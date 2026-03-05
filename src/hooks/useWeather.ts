@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import type { CurrentWeather } from "@/lib/types";
 
-export function useWeather(lat: number, lon: number) {
+export function useWeather(lat: number, lon: number, enabled = true) {
   return useQuery<CurrentWeather>({
     queryKey: ["weather", lat, lon],
     queryFn: async () => {
@@ -11,5 +11,6 @@ export function useWeather(lat: number, lon: number) {
       if (!res.ok) throw new Error("Failed to fetch weather");
       return res.json();
     },
+    enabled: enabled && lat !== 0 && lon !== 0,
   });
 }

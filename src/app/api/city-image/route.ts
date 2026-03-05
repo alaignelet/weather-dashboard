@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getCached, setCache } from "@/lib/cache";
 
 function isUnwantedImage(url: string): boolean {
   const lower = url.toLowerCase();
@@ -33,11 +34,9 @@ async function fetchWikipediaSearchImage(city: string): Promise<string | null> {
     const data = await res.json();
     const results = data.query?.search;
     if (!results?.length) return null;
-    for (const result of results) {
-      const image = await fetchWikipediaImage(result.title);
-      if (image) return image;
-    }
-    return null;
+    // Try all search results in parallel instead of sequentially
+    const images = await Promise.all(results.map((r: { title: string }) => fetchWikipediaImage(r.title)));
+    return images.find((img) => img !== null) ?? null;
   } catch {
     return null;
   }
@@ -46,22 +45,17 @@ async function fetchWikipediaSearchImage(city: string): Promise<string | null> {
 async function fetchUnsplashImage(city: string): Promise<string | null> {
   const key = process.env.UNSPLASH_ACCESS_KEY;
   if (!key) return null;
-  const queries = [`${city} city`, city];
-  for (const query of queries) {
-    try {
-      const res = await fetch(
-        `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=1&orientation=landscape`,
-        { headers: { Authorization: `Client-ID ${key}` }, next: { revalidate: 86400 } }
-      );
-      if (!res.ok) continue;
-      const data = await res.json();
-      const url = data.results?.[0]?.urls?.regular;
-      if (url) return url;
-    } catch {
-      continue;
-    }
+  try {
+    const res = await fetch(
+      `https://api.unsplash.com/search/photos?query=${encodeURIComponent(city + " city")}&per_page=1&orientation=landscape`,
+      { headers: { Authorization: `Client-ID ${key}` }, next: { revalidate: 86400 } }
+    );
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.results?.[0]?.urls?.regular ?? null;
+  } catch {
+    return null;
   }
-  return null;
 }
 
 export async function GET(request: NextRequest) {
@@ -70,26 +64,32 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "City required" }, { status: 400 });
   }
 
-  // Try Wikipedia direct lookups with multiple query variations
+  // Check server-side cache (24h TTL)
+  const cacheKey = `city-image:${city.toLowerCase()}`;
+  const cached = getCached(cacheKey);
+  if (cached !== undefined) return NextResponse.json(cached);
+
+  // Try all Wikipedia direct lookups in parallel
   const queries = [city, `${city} city`, `${city} (city)`];
-  for (const query of queries) {
-    const imageUrl = await fetchWikipediaImage(query);
-    if (imageUrl) {
-      return NextResponse.json({ imageUrl });
-    }
+  const wikiResults = await Promise.all(queries.map(fetchWikipediaImage));
+  const wikiImage = wikiResults.find((img) => img !== null);
+  if (wikiImage) {
+    const result = { imageUrl: wikiImage };
+    setCache(cacheKey, result, 86400000); // 24h
+    return NextResponse.json(result);
   }
 
   // Try Wikipedia search API as fallback
   const searchImage = await fetchWikipediaSearchImage(city);
   if (searchImage) {
-    return NextResponse.json({ imageUrl: searchImage });
+    const result = { imageUrl: searchImage };
+    setCache(cacheKey, result, 86400000);
+    return NextResponse.json(result);
   }
 
   // Fallback to Unsplash
   const unsplashUrl = await fetchUnsplashImage(city);
-  if (unsplashUrl) {
-    return NextResponse.json({ imageUrl: unsplashUrl });
-  }
-
-  return NextResponse.json({ imageUrl: null });
+  const result = { imageUrl: unsplashUrl };
+  setCache(cacheKey, result, 86400000);
+  return NextResponse.json(result);
 }

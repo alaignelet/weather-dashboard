@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useDashboard } from "@/context/DashboardContext";
 import { useWeather } from "@/hooks/useWeather";
 import dynamic from "next/dynamic";
@@ -54,17 +54,17 @@ export function WeatherMap() {
   const { selectedCity, selectToken, cities, addCity } = useDashboard();
   const [markers, setMarkers] = useState<Map<string, CityMarker>>(new Map());
 
-  const allCities = mergeAllCities(cities);
+  const allCities = useMemo(() => mergeAllCities(cities), [cities]);
 
-  const center: [number, number] = selectedCity
+  const center: [number, number] = useMemo(() => selectedCity
     ? [selectedCity.lat, selectedCity.lon]
-    : [20, 0]; // world view
+    : [20, 0], [selectedCity]);
 
   const handleMarkerClick = useCallback((marker: CityMarker) => {
     addCity({ name: marker.name, lat: marker.lat, lon: marker.lon, country: marker.country ?? "" });
   }, [addCity]);
 
-  const handleMarkerData = (marker: CityMarker) => {
+  const handleMarkerData = useCallback((marker: CityMarker) => {
     setMarkers((prev) => {
       const key = `${marker.lat}-${marker.lon}`;
       const existing = prev.get(key);
@@ -73,7 +73,10 @@ export function WeatherMap() {
       next.set(key, marker);
       return next;
     });
-  };
+  }, []);
+
+  const markersList = useMemo(() => Array.from(markers.values()), [markers]);
+  const selectedCoords = useMemo(() => selectedCity ? { lat: selectedCity.lat, lon: selectedCity.lon } : null, [selectedCity]);
 
   return (
     <div className="relative h-full w-full overflow-hidden">
@@ -88,8 +91,8 @@ export function WeatherMap() {
       <LeafletMap
         center={center}
         selectToken={selectToken}
-        markers={Array.from(markers.values())}
-        selectedCoords={selectedCity ? { lat: selectedCity.lat, lon: selectedCity.lon } : null}
+        markers={markersList}
+        selectedCoords={selectedCoords}
         onMarkerClick={handleMarkerClick}
       />
     </div>
