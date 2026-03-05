@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { motion } from "framer-motion";
-import { Sun, Moon } from "lucide-react";
+import { Sun, Moon, Search, X } from "lucide-react";
 import { CitySearch } from "./CitySearch";
 import { CityCardsRow } from "./CityCardsRow";
 import { CityHeader } from "./CityHeader";
@@ -27,6 +27,37 @@ function ScrollReveal({ children, className, delay = 0 }: { children: React.Reac
     >
       {children}
     </motion.div>
+  );
+}
+
+function MobileSearch() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="md:hidden">
+      {open ? (
+        <div className="fixed inset-x-0 top-0 z-[9999] h-20 flex items-center gap-2 px-4 bg-[var(--content-bg)] border-b border-[var(--card-border)]">
+          <div className="flex-1">
+            <CitySearch onSelect={() => setOpen(false)} />
+          </div>
+          <button
+            onClick={() => setOpen(false)}
+            className="flex items-center justify-center w-10 h-10 rounded-2xl bg-[var(--hover-bg)] hover:bg-[var(--card-border)] transition-all"
+            aria-label="Close search"
+          >
+            <X className="w-5 h-5 text-[var(--text-secondary)]" />
+          </button>
+        </div>
+      ) : (
+        <button
+          onClick={() => setOpen(true)}
+          className="flex items-center justify-center w-12 h-12 rounded-2xl bg-[var(--hover-bg)] hover:bg-[var(--card-border)] transition-all"
+          aria-label="Search cities"
+        >
+          <Search className="w-5 h-5 text-[var(--text-secondary)]" />
+        </button>
+      )}
+    </div>
   );
 }
 
@@ -77,12 +108,13 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
           </h1>
         </div>
 
-        {/* Search */}
-        <div className="flex-1 max-w-xl mr-4 lg:mr-6">
+        {/* Search - full bar on md+, icon on mobile */}
+        <div className="hidden md:block flex-1 max-w-xl mr-4 lg:mr-6">
           <CitySearch />
         </div>
 
-        <div className="flex items-center gap-4 lg:gap-6 ml-auto">
+        <div className="flex items-center gap-2 sm:gap-4 lg:gap-6 ml-auto">
+          <MobileSearch />
           <ThemeToggle />
         </div>
       </header>

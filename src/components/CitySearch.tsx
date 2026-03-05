@@ -7,7 +7,7 @@ import { useCitySearch } from "@/hooks/useCities";
 import { useDashboard } from "@/context/DashboardContext";
 import type { City } from "@/lib/types";
 
-export function CitySearch({ dropUp = false }: { dropUp?: boolean }) {
+export function CitySearch({ dropUp = false, onSelect: onSelectCallback }: { dropUp?: boolean; onSelect?: () => void }) {
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownPos, setDropdownPos] = useState<{ top: number; left: number; width: number } | null>(null);
@@ -46,6 +46,7 @@ export function CitySearch({ dropUp = false }: { dropUp?: boolean }) {
     addCity(city);
     setQuery("");
     setIsOpen(false);
+    onSelectCallback?.();
   };
 
   const showDropdown = isOpen && results && results.length > 0 && dropdownPos;
