@@ -37,8 +37,47 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
       } catch {
         // ignore invalid JSON
       }
+      setHydrated(true);
+      return;
     }
-    setHydrated(true);
+
+    // First visit: detect user's location
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (pos) => {
+          try {
+            const { latitude, longitude } = pos.coords;
+            const res = await fetch(
+              `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
+            );
+            if (res.ok) {
+              const data = await res.json();
+              if (data.city) {
+                const userCity: City = {
+                  name: data.city,
+                  lat: latitude,
+                  lon: longitude,
+                  country: data.countryCode ?? "",
+                };
+                setCities((prev) => {
+                  const exists = prev.some((c) => c.lat === userCity.lat && c.lon === userCity.lon);
+                  return exists ? prev : [userCity, ...prev];
+                });
+                setSelectedCity(userCity);
+                setSelectToken((t) => t + 1);
+              }
+            }
+          } catch {
+            // silently fail
+          }
+          setHydrated(true);
+        },
+        () => setHydrated(true), // denied or error — continue with defaults
+        { timeout: 5000 }
+      );
+    } else {
+      setHydrated(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -48,7 +87,7 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
   }, [cities, hydrated]);
 
   useEffect(() => {
-    if (cities.length > 0 && !selectedCity) {
+    if (hydrated && cities.length > 0 && !selectedCity) {
       setSelectedCity(cities[0]);
     }
   }, [cities, selectedCity]);
