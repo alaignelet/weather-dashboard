@@ -186,6 +186,8 @@ function MobileInteractionGuard() {
 export default function LeafletMap({ center, selectToken, markers, selectedCoords, onMarkerClick }: LeafletMapProps) {
   const { theme } = useTheme();
   const isDark = theme === "dark";
+  // This component is ssr: false, so window is safe at render time
+  const isMobile = window.innerWidth < 768;
 
   return (
     <MapContainer
@@ -197,6 +199,11 @@ export default function LeafletMap({ center, selectToken, markers, selectedCoord
       maxZoom={8}
       style={{ height: "100%", width: "100%", background: isDark ? "#020617" : "#f8fafc" }}
       zoomControl={false}
+      dragging={!isMobile}
+      touchZoom={!isMobile}
+      doubleClickZoom={!isMobile}
+      scrollWheelZoom={!isMobile}
+      tap={false}
       preferCanvas={true}
     >
       <MobileInteractionGuard />
