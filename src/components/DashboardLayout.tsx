@@ -88,7 +88,7 @@ function ThemeToggle() {
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen overflow-x-hidden">
+    <div className="min-h-screen overflow-x-clip">
       {/* Glass Navbar — sits behind the map, reappears below it */}
       <header className="fixed top-0 left-0 right-0 z-[45] h-20 flex items-center px-4 sm:px-6 lg:px-8 bg-[var(--nav-bg)] backdrop-blur-xl border-b border-[var(--card-border)]">
         <div className="flex items-center gap-3 mr-8 lg:mr-12 cursor-pointer group">
