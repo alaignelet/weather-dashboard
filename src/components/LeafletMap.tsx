@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import { useEffect, useRef, useMemo, memo } from "react";
+import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useTheme } from "next-themes";
@@ -16,7 +16,6 @@ function MapUpdater({ center, selectToken }: { center: [number, number]; selectT
   const map = useMap();
   useEffect(() => {
     const zoom = Math.max(map.getZoom(), 4);
-    // Convert center to pixel, shift up by 15% of map height to compensate for city cards, convert back
     const targetPoint = map.project(center, zoom);
     const mapHeight = map.getSize().y;
     targetPoint.y += mapHeight * 0.15;
@@ -34,7 +33,15 @@ function getTempColor(temp: number): string {
   return "#ef4444";
 }
 
-function createWeatherIcon(main: string, temp: number, isDark: boolean, isSelected: boolean) {
+// Icon cache to avoid recreating identical divIcons
+const iconCache = new Map<string, L.DivIcon>();
+
+function getWeatherIcon(main: string, temp: number, isDark: boolean, isSelected: boolean): L.DivIcon {
+  const roundedTemp = Math.round(temp);
+  const cacheKey = `${main}-${roundedTemp}-${isDark}-${isSelected}`;
+  const cached = iconCache.get(cacheKey);
+  if (cached) return cached;
+
   const { svg, color } = getWeatherIconSvg(main);
   const bg = isSelected
     ? (isDark ? "rgba(15, 23, 42, 0.9)" : "rgba(255, 255, 255, 0.95)")
@@ -42,19 +49,17 @@ function createWeatherIcon(main: string, temp: number, isDark: boolean, isSelect
   const border = isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.12)";
   const shadow = isDark ? "rgba(0,0,0,0.3)" : "rgba(0,0,0,0.1)";
   const textColor = isDark ? "#e2e8f0" : "#1e293b";
-  const tempColor = isSelected ? getTempColor(temp) : color;
+  const tempColor = isSelected ? getTempColor(roundedTemp) : color;
   const scale = isSelected ? "scale(1.3)" : "scale(1)";
-  const blur = isSelected ? "blur(16px)" : "blur(8px)";
   const boxShadow = isSelected
     ? `0 4px 20px ${shadow}`
     : `0 2px 8px ${shadow}`;
 
-  return L.divIcon({
+  const icon = L.divIcon({
     className: "",
     html: `<div style="
       display: inline-flex; align-items: center; gap: 5px;
       background: ${bg};
-      backdrop-filter: ${blur};
       border: 1px solid ${border};
       border-radius: 8px;
       padding: ${isSelected ? "6px 10px" : "4px 8px"};
@@ -64,12 +69,14 @@ function createWeatherIcon(main: string, temp: number, isDark: boolean, isSelect
       white-space: nowrap;
       box-shadow: ${boxShadow};
       transform: translate(-50%, -50%) ${scale};
-      transition: all 0.3s ease;
       z-index: ${isSelected ? "1000" : "1"};
-    ">${svg}<span style="color:${tempColor}">${Math.round(temp)}°</span></div>`,
+    ">${svg}<span style="color:${tempColor}">${roundedTemp}°</span></div>`,
     iconSize: [0, 0],
     iconAnchor: [0, 0],
   });
+
+  iconCache.set(cacheKey, icon);
+  return icon;
 }
 
 export interface CityMarker {
@@ -105,6 +112,30 @@ function ThemeTileLayer() {
   return <TileLayer key={theme} url={url} attribution="" keepBuffer={6} updateWhenZooming={false} />;
 }
 
+/** Individual marker — memoized to skip re-renders when props haven't changed */
+const MapMarker = memo(function MapMarker({
+  marker,
+  isDark,
+  isSelected,
+  onClick,
+}: {
+  marker: CityMarker;
+  isDark: boolean;
+  isSelected: boolean;
+  onClick?: () => void;
+}) {
+  if (marker.temp === undefined || !marker.main) return null;
+
+  return (
+    <Marker
+      position={[marker.lat, marker.lon]}
+      icon={getWeatherIcon(marker.main, marker.temp, isDark, isSelected)}
+      zIndexOffset={isSelected ? 1000 : 0}
+      eventHandlers={onClick ? { click: onClick } : undefined}
+    />
+  );
+});
+
 export default function LeafletMap({ center, selectToken, markers, selectedCoords, onMarkerClick }: LeafletMapProps) {
   const { theme } = useTheme();
   const isDark = theme === "dark";
@@ -119,20 +150,19 @@ export default function LeafletMap({ center, selectToken, markers, selectedCoord
       maxZoom={8}
       style={{ height: "100%", width: "100%", background: isDark ? "#020617" : "#f8fafc" }}
       zoomControl={false}
+      preferCanvas={true}
     >
       <MapUpdater center={center} selectToken={selectToken} />
       <ThemeTileLayer />
-      {markers.map((m) =>
-        m.temp !== undefined && m.main ? (
-          <Marker
-            key={`${m.lat}-${m.lon}-${isDark ? "d" : "l"}`}
-            position={[m.lat, m.lon]}
-            icon={createWeatherIcon(m.main, m.temp, isDark, !!(selectedCoords && m.lat === selectedCoords.lat && m.lon === selectedCoords.lon))}
-            zIndexOffset={selectedCoords && m.lat === selectedCoords.lat && m.lon === selectedCoords.lon ? 1000 : 0}
-            eventHandlers={onMarkerClick ? { click: () => onMarkerClick(m) } : undefined}
-          />
-        ) : null
-      )}
+      {markers.map((m) => (
+        <MapMarker
+          key={`${m.lat}-${m.lon}`}
+          marker={m}
+          isDark={isDark}
+          isSelected={!!(selectedCoords && m.lat === selectedCoords.lat && m.lon === selectedCoords.lon)}
+          onClick={onMarkerClick ? () => onMarkerClick(m) : undefined}
+        />
+      ))}
     </MapContainer>
   );
 }
