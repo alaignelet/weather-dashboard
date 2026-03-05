@@ -203,7 +203,6 @@ export default function LeafletMap({ center, selectToken, markers, selectedCoord
       touchZoom={!isMobile}
       doubleClickZoom={!isMobile}
       scrollWheelZoom={!isMobile}
-      tap={false}
       preferCanvas={true}
     >
       <MobileInteractionGuard />
