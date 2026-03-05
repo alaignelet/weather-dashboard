@@ -15,7 +15,7 @@ const TILES = {
 function MapUpdater({ center, selectToken }: { center: [number, number]; selectToken: number }) {
   const map = useMap();
   useEffect(() => {
-    const zoom = Math.max(map.getZoom(), 5);
+    const zoom = Math.max(map.getZoom(), 4);
     // Convert center to pixel, shift up by 15% of map height to compensate for city cards, convert back
     const targetPoint = map.project(center, zoom);
     const mapHeight = map.getSize().y;
@@ -112,8 +112,8 @@ export default function LeafletMap({ center, selectToken, markers, selectedCoord
   return (
     <MapContainer
       center={center}
-      zoom={4}
-      minZoom={5}
+      zoom={5}
+      minZoom={4}
       maxBoundsViscosity={1.0}
       maxBounds={[[-85, -180], [85, 180]]}
       maxZoom={8}
