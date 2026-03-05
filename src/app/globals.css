@@ -114,6 +114,13 @@ body {
   display: none !important;
 }
 
+/* Override Leaflet's touch-action: none on mobile so page scrolling works */
+@media (max-width: 767px) {
+  .leaflet-container {
+    touch-action: pan-y !important;
+  }
+}
+
 /* Fix tile grid flickering on zoom */
 .leaflet-tile-container img {
   outline: 1px solid transparent;
