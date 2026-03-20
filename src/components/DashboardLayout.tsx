@@ -104,7 +104,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
             </svg>
           </div>
           <h1 className="text-lg sm:text-xl font-bold tracking-tight bg-gradient-to-r from-[var(--text-primary)] to-[var(--text-muted)] bg-clip-text text-transparent">
-            CloudCast
+            IsSunny
           </h1>
         </div>
 
